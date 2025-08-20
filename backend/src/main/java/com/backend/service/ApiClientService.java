@@ -34,6 +34,18 @@ public class ApiClientService {
                 });
     }
 
+    // Return airlines information by airline code
+    // Example: /reference-data/airlines?airlineCodes=BA
+    public Mono<String> getAirlineInformation(String airlineCode) {
+        StringBuilder uriBuilder = new StringBuilder("/reference-data/airlines?");
+        if (airlineCode != null) uriBuilder.append("airlineCodes=").append(airlineCode);
+
+        String uri = uriBuilder.toString();
+        return get(uri);
+    }
+
+    // TODO: Add missing method for AirportAndCitiesSearch: /{locationId}
+    // Example: /reference-data/locations?subType=AIRPORT&keyword=London&page[limit]=10&page[offset]=0&sort=rank&view=FULL
     public Mono<String> AirportAndCitiesSearch(String subType, String keyword, Integer page, Integer offset, String sort, String view) {
         StringBuilder uriBuilder = new StringBuilder("/reference-data/locations?");
         if (subType != null) uriBuilder.append("subType=").append(subType).append("&");

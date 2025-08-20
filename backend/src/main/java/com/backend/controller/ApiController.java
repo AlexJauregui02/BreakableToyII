@@ -32,4 +32,15 @@ public class ApiController {
                     return true; 
                 });
     }
+
+    @GetMapping("/api/airline-information")
+    public Mono<String> getAirlineInformation(
+            @RequestParam(value = "airlineCode", required = false) String airlineCode) {
+        return apiClientService.getAirlineInformation(airlineCode)
+                .onErrorComplete(error -> {
+                    System.err.println("Error in getAirlineInformation: " + error.getMessage());
+                    return true;
+                });
+    }
+    
 }
