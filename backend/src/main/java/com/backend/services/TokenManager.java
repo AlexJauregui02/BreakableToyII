@@ -1,4 +1,4 @@
-package com.backend.service;
+package com.backend.services;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
