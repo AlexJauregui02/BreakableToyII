@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
+
 import reactor.core.publisher.Mono;
 
 @Service
@@ -38,6 +40,7 @@ public class ApiClientService {
                 });
     }
 
+    // TODO: Generalize POST method for other endpoints
     private Mono<String> post(String endpoint, Object body) {
 
         return webClient.post()
@@ -55,8 +58,12 @@ public class ApiClientService {
     }
 
     public Mono<String> postFlightOffersOnCriteria() {
+        flightOfferBodyResponse body = new flightOfferBodyResponse();
+        body.setCurretcyCode("USD");
+
+
         String endpoint = "/v2/shopping/flight-offers";
-        return post(endpoint, null)
+        return post(endpoint, body)
                 .onErrorComplete(error -> {
                     System.err.println("Error in postFlightOffersOnCriteria: " + error.getMessage());
                     return true; 

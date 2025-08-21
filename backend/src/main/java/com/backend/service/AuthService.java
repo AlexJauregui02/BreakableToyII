@@ -6,7 +6,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.backend.model.tokenResponse;
+import com.backend.models.tokenResponse;
 
 import reactor.core.publisher.Mono;
 
