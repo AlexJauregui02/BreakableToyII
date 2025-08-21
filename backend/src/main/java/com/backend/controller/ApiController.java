@@ -2,9 +2,11 @@ package com.backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
 import com.backend.service.ApiClientService;
 
 import reactor.core.publisher.Mono;
@@ -27,7 +29,7 @@ public class ApiController {
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "view", required = false) String view) {
 
-        return apiClientService.AirportAndCitiesSearch(subType, keyword, page, offset, sort, view)
+        return apiClientService.airportAndCitiesSearch(subType, keyword, page, offset, sort, view)
                 .onErrorComplete(error -> {
                     System.err.println("Error in AirportAndCitiesMatch: " + error.getMessage());
                     return true; 
@@ -71,8 +73,8 @@ public class ApiController {
     }
 
     @PostMapping("/api/flight-offers")
-    public Mono<String> postFlightOffersOnCriteria() {
-        return apiClientService.postFlightOffersOnCriteria()
+    public Mono<String> postFlightOffersOnCriteria(@RequestBody(required = true) flightOfferBodyResponse body) {
+        return apiClientService.postFlightOffersOnCriteria(body)
                 .onErrorComplete(error -> {
                     System.err.println("Error in postFlightOffersOnCriteria: " + error.getMessage());
                     return true; 

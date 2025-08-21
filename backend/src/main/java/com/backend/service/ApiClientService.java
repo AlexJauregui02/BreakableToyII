@@ -57,11 +57,10 @@ public class ApiClientService {
                 });
     }
 
-    public Mono<String> postFlightOffersOnCriteria() {
-        flightOfferBodyResponse body = new flightOfferBodyResponse();
-        body.setCurretcyCode("USD");
-
-
+    // Return flight offers based on criteria using POST
+    // Example: /shopping/flight-offers
+    public Mono<String> postFlightOffersOnCriteria(flightOfferBodyResponse body) {
+        
         String endpoint = "/v2/shopping/flight-offers";
         return post(endpoint, body)
                 .onErrorComplete(error -> {
@@ -125,7 +124,7 @@ public class ApiClientService {
 
     // TODO: Add missing method for AirportAndCitiesSearch: /{locationId}
     // Example: /reference-data/locations?subType=AIRPORT&keyword=London&page[limit]=10&page[offset]=0&sort=rank&view=FULL
-    public Mono<String> AirportAndCitiesSearch(String subType, String keyword, Integer page, Integer offset, String sort, String view) {
+    public Mono<String> airportAndCitiesSearch(String subType, String keyword, Integer page, Integer offset, String sort, String view) {
         StringBuilder uriBuilder = new StringBuilder("/v1/reference-data/locations?");
         if (subType != null) uriBuilder.append("subType=").append(subType).append("&");
         if (keyword != null) uriBuilder.append("keyword=").append(keyword).append("&");

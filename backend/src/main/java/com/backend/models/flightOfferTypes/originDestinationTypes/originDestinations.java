@@ -5,7 +5,7 @@ public class originDestinations {
     private String id;
     private String originLocationCode;
     private String destinationLocationCode;
-    private departureTimeRange departureDatetimeRange;
+    private departureTimeRange departureDateTimeRange;
 
     // Getters and Setters
     public String getId() { return id; }
@@ -17,6 +17,6 @@ public class originDestinations {
     public String getDestinationLocationCode() { return destinationLocationCode; }
     public void setDestinationLocationCode(String destinationLocationCode) { this.destinationLocationCode = destinationLocationCode; }
 
-    public departureTimeRange getDepartureDatetimeRange() { return departureDatetimeRange; }
-    public void setDepartureDatetimeRange(departureTimeRange departureDatetimeRange) { this.departureDatetimeRange = departureDatetimeRange; }
+    public departureTimeRange getDepartureDateTimeRange() { return departureDateTimeRange; }
+    public void setDepartureDateTimeRange(departureTimeRange departureDateTimeRange) { this.departureDateTimeRange = departureDateTimeRange; }
 }
