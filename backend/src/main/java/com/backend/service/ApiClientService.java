@@ -14,7 +14,7 @@ public class ApiClientService {
     private final WebClient webClient;
 
     public ApiClientService(WebClient.Builder webClientBuilder, 
-                            AuthService AuthService,
+                            TokenManager TokenManager,
                             @Value("${BASE_URL}") String baseUrl) {
         this.webClient = webClientBuilder
             .baseUrl(baseUrl)
@@ -22,7 +22,7 @@ public class ApiClientService {
                 .defaultCodecs()
                 .maxInMemorySize(10 * 1024 * 1024) // 10 MB
             )
-            .defaultHeader("Authorization", "Bearer " + AuthService.getAccessToken())
+            .defaultHeader("Authorization", "Bearer " + TokenManager.getAccessToken())
             .build();
     }
     

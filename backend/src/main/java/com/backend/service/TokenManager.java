@@ -1,6 +1,7 @@
 package com.backend.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -11,7 +12,7 @@ import com.backend.models.tokenResponse;
 import reactor.core.publisher.Mono;
 
 @Service 
-public class AuthService {
+public class TokenManager {
     
     private Mono<tokenResponse> accessTokenResponse;
     @Value("${CLIENT_ID}") String clientID;
@@ -21,11 +22,13 @@ public class AuthService {
             .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
             .build();
 
-    public void fetchAccessToken() {
+    private void fetchAccessToken() {
 
-        if (accessTokenResponse != null && accessTokenResponse.block() != null) {
+        if (accessTokenResponse != null) {
             return;
         }
+
+        System.out.println("===== Fetching access token... =====");
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "client_credentials");
@@ -44,9 +47,13 @@ public class AuthService {
         }
     }
 
-    // TODO: Remove this method once the access token is fetched automatically
-    public String getAccessToken() {
+    @Scheduled(fixedRate = 1798000)
+    private void refreshAccessToken() {
+        accessTokenResponse = null;
         fetchAccessToken();
+    }
+
+    public String getAccessToken() {
         return accessTokenResponse.block().getAccess_token();
     }
 
