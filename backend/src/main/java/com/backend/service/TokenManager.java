@@ -1,6 +1,5 @@
 package com.backend.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,8 +14,14 @@ import reactor.core.publisher.Mono;
 public class TokenManager {
     
     private Mono<tokenResponse> accessTokenResponse;
-    @Value("${CLIENT_ID}") String clientID;
-    @Value("${CLIENT_SECRET}") String clientSecret;
+    private String clientID = System.getProperty("CLIENT_ID");
+    private String clientSecret = System.getProperty("CLIENT_SECRET");
+
+    // TODO: Consider a better way to initialize the token manager, 
+    // it starts fetching the token twice.
+    private TokenManager() {
+        fetchAccessToken();
+    }
 
     private final WebClient webClient = WebClient.builder()
             .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -47,7 +52,7 @@ public class TokenManager {
         }
     }
 
-    @Scheduled(fixedRate = 1798000)
+    @Scheduled(fixedRate = 1798 * 1000)
     private void refreshAccessToken() {
         accessTokenResponse = null;
         fetchAccessToken();
