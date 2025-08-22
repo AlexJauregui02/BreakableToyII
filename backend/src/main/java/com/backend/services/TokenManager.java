@@ -8,8 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.backend.models.tokenResponse;
 
-import reactor.core.publisher.Mono;
-
 @Service 
 public class TokenManager {
     
@@ -48,12 +46,13 @@ public class TokenManager {
         }
     }
 
-    @Scheduled(fixedRate = 1798 * 1000)
+    @Scheduled(fixedRate = 1500 * 1000)
     private void refreshAccessToken() {
         fetchAccessToken();
     }
 
     public String getAccessToken() {
+        System.out.println("===== Access Token: " + accessToken);
         return accessToken;
     }
 
