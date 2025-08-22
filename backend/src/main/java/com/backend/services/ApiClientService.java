@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 public class ApiClientService {
 
     private final WebClient webClient;
+    private final TokenManager TokenManager;
 
     public ApiClientService(WebClient.Builder webClientBuilder, 
                             TokenManager TokenManager,
@@ -22,14 +23,16 @@ public class ApiClientService {
                 .defaultCodecs()
                 .maxInMemorySize(10 * 1024 * 1024) // 10 MB
             )
-            .defaultHeader("Authorization", "Bearer " + TokenManager.getAccessToken())
             .build();
+        this.TokenManager = TokenManager;
     }
     
     private Mono<String> get(String endpoint) {
+        String AccessToken = TokenManager.getAccessToken();
 
         return webClient.get()
                 .uri(endpoint)
+                .header("Authorization", "Bearer " + AccessToken)
                 .retrieve()
                 .bodyToMono(String.class)
                 .doOnError(error -> {
@@ -42,9 +45,11 @@ public class ApiClientService {
 
     // TODO: Generalize POST method for other endpoints
     private Mono<String> post(String endpoint, Object body) {
+        String AccessToken = TokenManager.getAccessToken();
 
         return webClient.post()
                 .uri(endpoint)
+                .header("Authorization", "Bearer " + AccessToken)
                 .header("X-HTTP-Method-Override", "GET")
                 .bodyValue(body)
                 .retrieve()

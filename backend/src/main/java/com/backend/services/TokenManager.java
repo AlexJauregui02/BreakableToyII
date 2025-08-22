@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @Service 
 public class TokenManager {
     
-    private Mono<tokenResponse> accessTokenResponse;
+    private String accessToken;
     private String clientID = System.getProperty("CLIENT_ID");
     private String clientSecret = System.getProperty("CLIENT_SECRET");
 
@@ -28,11 +28,6 @@ public class TokenManager {
             .build();
 
     private void fetchAccessToken() {
-
-        if (accessTokenResponse != null) {
-            return;
-        }
-
         System.out.println("===== Fetching access token... =====");
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -41,12 +36,13 @@ public class TokenManager {
         body.add("client_secret", clientSecret);
 
         try {
-            Mono<tokenResponse> response = webClient.post()
+            tokenResponse response = webClient.post()
                     .uri("https://test.api.amadeus.com/v1/security/oauth2/token")
                     .bodyValue(body)
                     .retrieve()
-                    .bodyToMono(tokenResponse.class);
-            accessTokenResponse = response;
+                    .bodyToMono(tokenResponse.class)
+                    .block();
+            accessToken = response.getAccess_token();
         } catch (Exception e) {
             System.err.println("Error fetching access token: " + e.getMessage());
         }
@@ -54,12 +50,11 @@ public class TokenManager {
 
     @Scheduled(fixedRate = 1798 * 1000)
     private void refreshAccessToken() {
-        accessTokenResponse = null;
         fetchAccessToken();
     }
 
     public String getAccessToken() {
-        return accessTokenResponse.block().getAccess_token();
+        return accessToken;
     }
 
 }
