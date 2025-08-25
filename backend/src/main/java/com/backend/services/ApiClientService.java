@@ -1,6 +1,5 @@
 package com.backend.services;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -15,10 +14,9 @@ public class ApiClientService {
     private final TokenManager TokenManager;
 
     public ApiClientService(WebClient.Builder webClientBuilder, 
-                            TokenManager TokenManager,
-                            @Value("${BASE_URL}") String baseUrl) {
+                            TokenManager TokenManager) {
         this.webClient = webClientBuilder
-            .baseUrl(baseUrl)
+            .baseUrl("https://test.api.amadeus.com")
             .codecs(configurer -> configurer
                 .defaultCodecs()
                 .maxInMemorySize(10 * 1024 * 1024) // 10 MB
