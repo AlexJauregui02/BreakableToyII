@@ -1,6 +1,5 @@
 package com.backend.services;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -12,24 +11,26 @@ import reactor.core.publisher.Mono;
 public class ApiClientService {
 
     private final WebClient webClient;
+    private final TokenManager TokenManager;
 
     public ApiClientService(WebClient.Builder webClientBuilder, 
-                            TokenManager TokenManager,
-                            @Value("${BASE_URL}") String baseUrl) {
+                            TokenManager TokenManager) {
         this.webClient = webClientBuilder
-            .baseUrl(baseUrl)
+            .baseUrl("https://test.api.amadeus.com")
             .codecs(configurer -> configurer
                 .defaultCodecs()
                 .maxInMemorySize(10 * 1024 * 1024) // 10 MB
             )
-            .defaultHeader("Authorization", "Bearer " + TokenManager.getAccessToken())
             .build();
+        this.TokenManager = TokenManager;
     }
     
     private Mono<String> get(String endpoint) {
+        String AccessToken = TokenManager.getAccessToken();
 
         return webClient.get()
                 .uri(endpoint)
+                .header("Authorization", "Bearer " + AccessToken)
                 .retrieve()
                 .bodyToMono(String.class)
                 .doOnError(error -> {
@@ -42,9 +43,11 @@ public class ApiClientService {
 
     // TODO: Generalize POST method for other endpoints
     private Mono<String> post(String endpoint, Object body) {
+        String AccessToken = TokenManager.getAccessToken();
 
         return webClient.post()
                 .uri(endpoint)
+                .header("Authorization", "Bearer " + AccessToken)
                 .header("X-HTTP-Method-Override", "GET")
                 .bodyValue(body)
                 .retrieve()

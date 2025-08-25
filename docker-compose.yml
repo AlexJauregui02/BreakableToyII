@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: breakable-toy-2-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080"
