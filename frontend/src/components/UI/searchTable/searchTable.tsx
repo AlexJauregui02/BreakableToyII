@@ -1,18 +1,18 @@
-
 import { useState } from 'react'
-import Card from '../card/card'
 
-import type { FlightSearch } from '../../../types/flightSearch'
+import type { flightSearchOffer } from '../../../types/flightSearch'
 
 import Select from 'react-select'
-import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { CalendarIcon } from 'lucide-react'
 
 import { Button } from '../button/button'
 import { Input } from '../input/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
-import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../calendar/calendar'
+import Card from '../card/card'
+import { getFlightOffers } from '@/api/services/flightSearchService'
 
 
 interface SelectOption {
@@ -20,7 +20,7 @@ interface SelectOption {
     value: string;
 }
 
-function formatDate(date: Date | undefined) {
+function formatDate(date: Date | undefined | null) {
     if (!date) {
         return '';
     }
@@ -61,13 +61,13 @@ export default function SearchTable(){
         else setDestinationLocationCode('');
     }
 
-    const [departureDate, setDepartureDate] = useState<Date | undefined>(new Date());
+    const [departureDate, setDepartureDate] = useState<Date | undefined>(undefined);
     const handleDepartureDate = (date: Date | undefined) => {
         setDepartureDate(date);
     }
 
-    const [returnDate, setReturnDate] = useState<Date | null>(null);
-    const handleReturnDate = (date: Date | null) => {
+    const [returnDate, setReturnDate] = useState<Date | undefined>(undefined);
+    const handleReturnDate = (date: Date | undefined) => {
         setReturnDate(date);
     }
 
@@ -90,7 +90,7 @@ export default function SearchTable(){
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const flightSearchOffer: FlightSearch = {
+        const flightSearchOffer: flightSearchOffer = {
             originLocationCode: originLocationCode,
             destinationLocationCode: destinationLocationCode,
             departureDate: departureDate?.toISOString().split('T')[0],
@@ -100,8 +100,20 @@ export default function SearchTable(){
             currencyCode: currencyCode
         };
 
+        if(!originLocationCode || 
+           !destinationLocationCode || 
+           !departureDate ||
+           !adults) 
+        {
+            alert("Campo faltante");
+            return;
+        }
+
         try {
             console.log(flightSearchOffer);
+            console.log('Trying...')
+            const flightOffers = await getFlightOffers(flightSearchOffer);
+            console.log(flightOffers);
         }
         catch (error) {
             console.log('Error')
@@ -152,9 +164,10 @@ export default function SearchTable(){
                             </label>
                             <div className='relative flex gap-2'>
                                 <Input
-                                    placeholder='June 01, 2025'
+                                    placeholder='New Date'
                                     className='bg-background pr-10'
                                     value={formatDate(departureDate)}
+                                    required
                                 />
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -187,32 +200,56 @@ export default function SearchTable(){
                             <label className="font-medium mb-1">
                                 Return Date (optional):
                             </label>
-                            <DatePicker
-                                showIcon
-                                selected={returnDate? new Date(returnDate) : null}
-                                onChange={handleReturnDate}
-                                className='border-1 border-gray-400 shadow-sm rounded-sm w-full text-sm'
-                                dateFormat="dd-MM-yyyy"
-                            />
+                            <div className='relative flex gap-2'>
+                                <Input
+                                    placeholder='Returning Date'
+                                    className='bg-background pr-10'
+                                    value={formatDate(returnDate)}
+                                />
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant='ghost'
+                                            className='absolute top-1/2 right-2 size-6 -translate-y-1/2'
+                                        >
+                                            <CalendarIcon className='size-3.5'/>
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        className='w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm'
+                                        align='end'
+                                        alignOffset={-8}
+                                        sideOffset={10}
+                                    >
+                                        <Calendar
+                                            mode='single'
+                                            captionLayout='dropdown'
+                                            className='bg-white'
+                                            selected={returnDate}
+                                            onSelect={handleReturnDate}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                         </div>
                         
                         <div className='flex flex-col'>
                             <label className="font-medium mb-1">
-                                Adults (optional):
+                                Adults:
                             </label>
-                            <Input
+                            <input
                                 id='adults'
                                 type='number'
                                 value={Number(adults)}
                                 onChange={handleAdults}
-                                className='h-8 w-full rounded-sm border border-input border-gray-400 px-3 py-1 text-sm shadow-sm'
+                                className='h-8 w-full rounded-sm border border-gray-400 px-3 py-1 text-sm shadow-sm'
                                 min={0}
                                 max={999}
                             />
                         </div>
 
                         <label className='font-medium'>
-                            Currency:
+                            Currency (optional):
                             <Select
                                 id='currencyCode'
                                 options={currencyCodeOptions}
@@ -223,7 +260,6 @@ export default function SearchTable(){
                                     option: () => 'bg-white rounded-sm pl-2 py-1',
                                     menu: () => 'bg-white border-1 border-gray-400 rounded-sm'
                                 }}
-                                required
                             />
                         </label>
 
