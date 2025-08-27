@@ -12,7 +12,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        'bg-white flex flex-col rounded-l p-10 shadow-md border border-gray-300',
+        'bg-white flex flex-col rounded p-10 shadow-md border border-gray-300',
         className,
       )}
       {...props}

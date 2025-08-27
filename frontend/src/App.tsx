@@ -1,6 +1,6 @@
 import './App.css'
-import Card from './components/UI/card/card'
-import SearchTable from './components/UI/searchTable/searchTable'
+import Card from './components/ui/card/card'
+import SearchTable from './components/ui/searchTable/searchTable'
 
 export default function App() {
   return (
