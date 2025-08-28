@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import type { flightSearchOffer } from '../../../types/flightSearch'
+import type { flightSearchOffer } from '@/types/flightSearch'
+import type { SelectOption } from '@/types/option'
 
 import Select from 'react-select'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -8,17 +9,12 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { CalendarIcon } from 'lucide-react'
 
-import { Button } from '../button/button'
-import { Input } from '../input/input'
-import { Calendar } from '../calendar/calendar'
-import Card from '../card/card'
+import { Button } from '@/components/UI/button/button'
+import { Input } from '@/components/UI/input/input'
+import { Calendar } from '@/components/UI/calendar/calendar'
+import { Card } from '@/components/UI/card/card'
 import { getFlightOffers } from '@/api/services/flightSearchService'
 
-
-interface SelectOption {
-    label: string;
-    value: string;
-}
 
 function formatDate(date: Date | undefined | null) {
     if (!date) {
@@ -32,8 +28,7 @@ function formatDate(date: Date | undefined | null) {
     })
 }
 
-export default function SearchTable(){
-
+export default function SearchPage() {
     const originLocationCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'SFO', value: 'SFO' },
@@ -110,8 +105,6 @@ export default function SearchTable(){
         }
 
         try {
-            console.log(flightSearchOffer);
-            console.log('Trying...')
             const flightOffers = await getFlightOffers(flightSearchOffer);
             console.log(flightOffers);
         }

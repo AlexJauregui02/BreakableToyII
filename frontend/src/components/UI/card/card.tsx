@@ -4,7 +4,7 @@ import { cn } from '../../../lib/utils'
 
 type CardProps = React.PropsWithChildren<React.ComponentProps<'div'>>;
 
-export default function Card({
+function Card({
     className,
     children,
     ...props
@@ -21,3 +21,5 @@ export default function Card({
     </div>
   );
 }
+
+export { Card }
