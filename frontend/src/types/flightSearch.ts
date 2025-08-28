@@ -1,4 +1,4 @@
-export interface flightSearchOffer {
+export interface FlightSearchOffer {
     originLocationCode: string;
     destinationLocationCode: string;
     departureDate: string | undefined;
@@ -6,6 +6,12 @@ export interface flightSearchOffer {
     adults: string;
     nonStop: boolean;
     currencyCode: String;
+}
+
+export type FlightOffersContextType = {
+    results: FlightOffersResponse | null
+    setResults: (data: FlightOffersResponse) => void
+    clearResults: () => void
 }
 
 export interface FlightOffersResponse {

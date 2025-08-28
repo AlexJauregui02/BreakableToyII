@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { flightSearchOffer } from '@/types/flightSearch'
+import type { FlightOffersResponse, FlightSearchOffer } from '@/types/flightSearch'
 import type { SelectOption } from '@/types/option'
 
 import Select from 'react-select'
@@ -14,6 +14,8 @@ import { Input } from '@/components/UI/input/input'
 import { Calendar } from '@/components/UI/calendar/calendar'
 import { Card } from '@/components/UI/card/card'
 import { getFlightOffers } from '@/api/services/flightSearchService'
+import { useFlightOffersResponse } from '@/context/FlightOffersContext'
+import { useNavigate } from 'react-router-dom'
 
 
 function formatDate(date: Date | undefined | null) {
@@ -29,6 +31,9 @@ function formatDate(date: Date | undefined | null) {
 }
 
 export default function SearchPage() {
+    const { setResults } = useFlightOffersResponse();
+    const navigate = useNavigate();
+
     const originLocationCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'SFO', value: 'SFO' },
@@ -85,7 +90,7 @@ export default function SearchPage() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const flightSearchOffer: flightSearchOffer = {
+        const flightSearchOffer: FlightSearchOffer = {
             originLocationCode: originLocationCode,
             destinationLocationCode: destinationLocationCode,
             departureDate: departureDate?.toISOString().split('T')[0],
@@ -105,8 +110,12 @@ export default function SearchPage() {
         }
 
         try {
-            const flightOffers = await getFlightOffers(flightSearchOffer);
-            console.log(flightOffers);
+            const flightOffers = await getFlightOffers(flightSearchOffer) as FlightOffersResponse;
+
+            if (flightOffers !== undefined) {
+                setResults(flightOffers);
+                navigate('/results');
+            }
         }
         catch (error) {
             console.log('Error')

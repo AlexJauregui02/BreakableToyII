@@ -1,8 +1,8 @@
 import { fetchApi } from "../client"
-import type { flightSearchOffer, FlightOffersResponse } from "@/types/flightSearch"
+import type { FlightSearchOffer, FlightOffersResponse } from "@/types/flightSearch"
 
 
-export async function getFlightOffers(data: flightSearchOffer): Promise<FlightOffersResponse | undefined> {
+export async function getFlightOffers(data: FlightSearchOffer): Promise<FlightOffersResponse | undefined> {
     let url = `/flight-offers?originLocationCode=${data.originLocationCode}&destinationLocationCode=${data.destinationLocationCode}&departureDate=${data.departureDate}&adults=${data.adults}`;
 
     if (data.returnDate) { url += `&returnDate=${data.returnDate}`; }
