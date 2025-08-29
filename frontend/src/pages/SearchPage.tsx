@@ -37,16 +37,19 @@ export default function SearchPage() {
     const originLocationCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'SFO', value: 'SFO' },
+        { label: 'SYD', value: 'SYD' },
     ];
 
     const destinationLocationCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'LAX', value: 'LAX' },
+        { label: 'BKK', value: 'BKK' },
     ];
 
     const currencyCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'USD', value: 'USD' },
+        { label: 'MXN', value: 'MXN' },
     ];
 
     const [originLocationCode, setOriginLocationCode] = useState<string>('');

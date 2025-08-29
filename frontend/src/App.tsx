@@ -10,7 +10,7 @@ import { FlightResultsProvider } from './context/FlightOffersContext'
 export default function App() {
   return (
     <div className="min-h-screen flex p-3">
-      <Card className="flex-1">
+      <Card className="flex-1 px-30">
         <FlightResultsProvider>
           <Router>
             <Routes>
