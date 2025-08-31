@@ -9,14 +9,14 @@ import { FlightResultsProvider } from './context/FlightOffersContext'
 
 export default function App() {
   return (
-    <div className="min-h-screen flex p-3">
+    <div className="h-screen flex p-3">
       <Card className="flex-1 px-30">
         <FlightResultsProvider>
           <Router>
             <Routes>
               <Route path='/' element={<SearchPage />}/>
               <Route path='/results' element={<ResultPage/>}/>
-              <Route path='/details' element={<DetailsPage/>}/>
+              <Route path='/results/:flightOfferID' element={<DetailsPage/>}/>
             </Routes>
           </Router>
         </FlightResultsProvider>

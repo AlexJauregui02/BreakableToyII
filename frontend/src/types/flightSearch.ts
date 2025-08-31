@@ -172,6 +172,7 @@ interface fareDetailsBySegment {
     sliceDiceIndicator?: sliceDiceIndicator;
     includedCheckedBags?: baggageAllowance;
     additionalServices?: additionalServicesRequest;
+    amenities?: amenities[];
 }
 
 interface allotmentDetails {
@@ -207,3 +208,14 @@ interface chargeableSeat {
 }
 
 type serviceName = 'PRIORITY_BOARDING' | 'AIRPORT_CHECKIN';
+
+interface amenities {
+    description?: string;
+    isChargeable?: boolean;
+    amenityType?: string;
+    amenityProvider?: amenityProvider;
+}
+
+interface amenityProvider {
+    name?: string;
+}

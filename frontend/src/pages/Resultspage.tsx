@@ -4,33 +4,8 @@ import { Card } from '@/components/UI/card/card';
 import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { formatDate, formatDuration } from '@/lib/utils';
 
-
-function formatDate(date: string | undefined): string {
-    if (!date) return '';
-    let formattedDate = new Date(date).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-    }).toLowerCase();
-
-    formattedDate = formattedDate.replace(' ','');
-
-    return formattedDate;
-}
-
-function formatHour(duration: string | undefined): string {
-
-    if (!duration) return '';
-
-    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
-    if (!match) return duration;
-
-    const hours = match[1] ? `${match[1]}h` : '';
-    const minutes = match[2] ? `${match[2]}m` : '';
-
-    return [hours, minutes].filter(Boolean).join(' ');
-}
 
 function handleNumberstops(numberStops: number | undefined): string {
 
@@ -61,9 +36,13 @@ export default function ResultsPage() {
         navigate('/');
     }
 
+    const handleDetailsPage = (flightOfferIDSelected: string) => {
+        navigate(`/results/${flightOfferIDSelected}`);
+    }
+
     return (
-        <>
-            <div className='my-9 text-md'>
+        <div className='h-full py-5 space-y-5'>
+            <div className='text-md'>
                 <Button
                     type='submit'
                     className='w-1/5'
@@ -72,34 +51,34 @@ export default function ResultsPage() {
                     Return to search
                 </Button>
             </div>
-            <div>
+            <div className='border h-[95%] overflow-y-auto inset-shadow-sm p-2 bg-gray-50'>
                 {
                     results.data.map(item =>
-                        <Card className='my-4 p-0 text-md'>
+                        <Card onClick={() => handleDetailsPage(item.id)} className='m-4 p-0 text-sm hover:shadow-xl transition-shadow'>
                             {
                                 item.itineraries?.map(itinerary =>
                                     <div className='flex w-full'>
                                         <div className='w-[80%]'>
                                         {
                                             itinerary.segments.map(segment => 
-                                                <div className='border p-6'>
+                                                <div className='border p-4'>
                                                     <div>
                                                         {formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
                                                     </div>
-                                                    <div className='flex h-16'>
+                                                    <div className='flex h-10'>
                                                         <div className='w-[50%]'>
                                                             Ciudad1({segment.departure?.iataCode}) - Ciudad2({segment.arrival?.iataCode})
                                                         </div>
                                                         <div className='w-[50%]'>
                                                             <div>
-                                                                {formatHour(segment.duration)} ({handleNumberstops(segment.numberOfStops)})
+                                                                {formatDuration(segment.duration)} ({handleNumberstops(segment.numberOfStops)})
                                                             </div>
                                                             {segment.numberOfStops !== undefined && segment.numberOfStops > 0 && 
                                                                 <div>
                                                                     {
                                                                         segment.stops?.map(stop =>
                                                                             <div>
-                                                                                {formatHour(stop.duration)} in City({stop.iataCode})
+                                                                                {formatDuration(stop.duration)} in City({stop.iataCode})
                                                                             </div>
                                                                         )
                                                                     }
@@ -114,7 +93,7 @@ export default function ResultsPage() {
                                             )
                                         }
                                         </div>
-                                        <div className='w-[20%] p-6 pr-15 border flex items-center font-semibold'>
+                                        <div className='w-[20%] p-0 pr-15 border flex items-center font-semibold'>
                                             <div className='w-full flex flex-col'>
                                                 <div className='flex justify-end'>
                                                     $ {Number(item.price?.grandTotal).toLocaleString()} {item.price?.currency}
@@ -138,6 +117,6 @@ export default function ResultsPage() {
                 }
 
             </div>
-        </>
+        </div>
     );
 }
