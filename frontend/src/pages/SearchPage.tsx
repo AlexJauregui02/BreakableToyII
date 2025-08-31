@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import type { FlightOffersResponse, FlightSearchOffer } from '@/types/flightSearch'
+import type { apiResponse } from '@/types/apiResponse'
+import type { flightOfferResponse, FlightSearchOffer } from '@/types/flightSearch'
 import type { SelectOption } from '@/types/option'
 
 import Select from 'react-select'
@@ -113,7 +114,7 @@ export default function SearchPage() {
         }
 
         try {
-            const flightOffers = await getFlightOffers(flightSearchOffer) as FlightOffersResponse;
+            const flightOffers = await getFlightOffers(flightSearchOffer) as apiResponse<flightOfferResponse>;
 
             if (flightOffers !== undefined) {
                 setResults(flightOffers);

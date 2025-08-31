@@ -1,3 +1,5 @@
+import type { apiResponse } from "./apiResponse";
+
 export interface FlightSearchOffer {
     originLocationCode: string;
     destinationLocationCode: string;
@@ -9,31 +11,13 @@ export interface FlightSearchOffer {
 }
 
 export type FlightOffersContextType = {
-    results: FlightOffersResponse | null
-    setResults: (data: FlightOffersResponse) => void
+    results: apiResponse<flightOfferResponse> | null
+    setResults: (data: apiResponse<flightOfferResponse>) => void
     clearResults: () => void
 }
 
-export interface FlightOffersResponse {
-    meta: meta;
-    data: flightOffer[];
-}
 
-interface meta {
-    count: number;
-    links: metaLink;
-}
-
-interface metaLink {
-    self?: string;
-    next?: string;
-    previous?: string;
-    last?: string;
-    first?: string;
-    up?: string;
-}
-
-interface flightOffer {
+export interface flightOfferResponse {
     type: string;
     id: string;
     source?: string;

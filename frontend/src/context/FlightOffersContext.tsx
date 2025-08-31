@@ -1,13 +1,14 @@
-import type { FlightOffersResponse, FlightOffersContextType } from "@/types/flightSearch"
+import type { apiResponse } from "@/types/apiResponse";
+import type { flightOfferResponse, FlightOffersContextType } from "@/types/flightSearch"
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 
 const FlightOffersContext = createContext<FlightOffersContextType | undefined>(undefined);
 
 export const FlightResultsProvider = ({ children }: { children: ReactNode }) => {
-    const [results, setResultsState] = useState<FlightOffersResponse | null>(null);
+    const [results, setResultsState] = useState<apiResponse<flightOfferResponse> | null>(null);
 
-    const setResults = (data: FlightOffersResponse) => { setResultsState(data) }
+    const setResults = (data: apiResponse<flightOfferResponse>) => { setResultsState(data) }
     const clearResults = () => setResultsState(null);
 
     return (

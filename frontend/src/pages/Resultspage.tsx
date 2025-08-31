@@ -5,6 +5,7 @@ import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration } from '@/lib/utils';
+import { IataCityName } from '@/components/Elements/iataCityName';
 
 
 function handleNumberstops(numberStops: number | undefined): string {
@@ -67,7 +68,7 @@ export default function ResultsPage() {
                                                     </div>
                                                     <div className='flex h-10'>
                                                         <div className='w-[50%]'>
-                                                            Ciudad1({segment.departure?.iataCode}) - Ciudad2({segment.arrival?.iataCode})
+                                                            <IataCityName code={segment.departure?.iataCode}/> - Ciudad2({segment.arrival?.iataCode})
                                                         </div>
                                                         <div className='w-[50%]'>
                                                             <div>
