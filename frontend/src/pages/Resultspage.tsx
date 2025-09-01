@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration } from '@/lib/utils';
 import { IataCityName } from '@/components/Elements/iataCityName';
+import { IataAirlineName } from '@/components/Elements/iataAirlineName';
 
 
 function handleNumberstops(numberStops: number | undefined): string {
@@ -86,7 +87,7 @@ export default function ResultsPage() {
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        Aerolinea ({segment.carrierCode})
+                                                        <IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})
                                                     </div>
                                                 </div>
                                             )

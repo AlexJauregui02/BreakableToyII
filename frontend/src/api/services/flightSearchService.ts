@@ -1,7 +1,7 @@
 import { fetchApi } from "../client"
 import type { apiResponse } from "@/types/apiResponse";
 import type { flightOfferResponse, FlightSearchOffer } from "@/types/flightSearch"
-import type { IataCodeAirportSearchResponse } from "@/types/iataCodeSearch";
+import type { IataCodeAirlineSearchResponse, IataCodeAirportSearchResponse } from "@/types/iataCodeSearch";
 
 
 export async function getFlightOffers(data: FlightSearchOffer): Promise<apiResponse<flightOfferResponse> | undefined> {
@@ -19,4 +19,20 @@ export async function getCityNameFromIataCode(iataCode: string): Promise<apiResp
     let url = `/airport-and-cities-search?subType=AIRPORT&keyword=${iataCode}`;
 
     return fetchApi<apiResponse<IataCodeAirportSearchResponse>>(url);
+}
+
+export async function getAirlineNameFromIataCode(iataCode: string): Promise<apiResponse<IataCodeAirlineSearchResponse> | undefined> {
+
+    let url = `/airline-information?airlineCode=${iataCode}`;
+
+    return fetchApi<apiResponse<IataCodeAirlineSearchResponse>>(url);
+}
+
+export async function searchAirportsByKeyword(keyword: string): Promise<IataCodeAirportSearchResponse[]> {
+  if (!keyword) return [];
+
+  const url = `/airport-and-cities-search?subType=AIRPORT&keyword=${encodeURIComponent(keyword)}`;
+  const res = await fetchApi<apiResponse<IataCodeAirportSearchResponse>>(url);
+
+  return res?.data ?? [];
 }

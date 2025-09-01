@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { IataCityName } from '@/components/Elements/iataCityName'
+import { IataAirlineName } from '@/components/Elements/iataAirlineName'
 
 
 export default function DetailsPage() {
@@ -64,7 +65,7 @@ export default function DetailsPage() {
 
                                                     <div>Flight number: {segment.number}</div>
                                                     <div>Aircraft type: {segment.aircraft?.code}</div>
-                                                    <div>Aerolinea({segment.carrierCode})</div>
+                                                    <div><IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})</div>
                                                 </div>
                                                 <Card className='w-[50%] p-2'>
                                                     Travelers fare details
