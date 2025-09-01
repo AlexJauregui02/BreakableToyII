@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration } from '@/lib/utils';
 import { IataCityName } from '@/components/Elements/iataCityName';
 import { IataAirlineName } from '@/components/Elements/iataAirlineName';
+import ArrowDownIcon from '@/assets/arrow-down.png'
 
 
 function handleNumberstops(numberStops: number | undefined): string {
@@ -51,67 +52,81 @@ export default function ResultsPage() {
                     Return to search
                 </Button>
             </div>
-            <div className='border h-[95%] overflow-y-auto inset-shadow-sm p-2 bg-gray-50'>
+            <div className='h-[95%] border overflow-y-auto inset-shadow-sm p-3 bg-gray-100'>
                 {
                     results.data.map(item =>
-                        <Card onClick={() => handleDetailsPage(item.id)} className='m-4 p-0 text-sm hover:shadow-xl transition-shadow'>
+                        <Card onClick={() => handleDetailsPage(item.id)} className='border-0 m-4 p-0 text-sm hover:shadow-xl transition-shadow flex flex-row'>
+                            <div className='w-[80%]'>
                             {
-                                item.itineraries?.map(itinerary =>
-                                    <div className='flex w-full'>
-                                        <div className='w-[80%]'>
-                                        {
-                                            itinerary.segments.map(segment => 
-                                                <div className='border p-4'>
-                                                    <div>
-                                                        {formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
-                                                    </div>
-                                                    <div className='flex h-10'>
-                                                        <div className='w-[60%]'>
-                                                            <IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})
+                                item.itineraries?.map((itinerary, index) =>
+                                    <>
+                                    <div className='w-full'>
+                                        <div className='w-full'>
+                                            {
+                                                itinerary.segments.map(segment => 
+                                                    <div className='border w-full p-4'>
+                                                        <div>
+                                                            {formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
                                                         </div>
-                                                        <div className='w-[40%]'>
-                                                            <div>
-                                                                {formatDuration(segment.duration)} ({handleNumberstops(segment.numberOfStops)})
+                                                        <div className='flex h-10'>
+                                                            <div className='w-[60%]'>
+                                                                <IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})
                                                             </div>
-                                                            {segment.numberOfStops !== undefined && segment.numberOfStops > 0 && 
+                                                            <div className='w-[40%]'>
                                                                 <div>
-                                                                    {
-                                                                        segment.stops?.map(stop =>
-                                                                            <div>
-                                                                                {formatDuration(stop.duration)} in City({stop.iataCode})
-                                                                            </div>
-                                                                        )
-                                                                    }
+                                                                    {formatDuration(segment.duration)} ({handleNumberstops(segment.numberOfStops)})
                                                                 </div>
-                                                            }
+                                                                {segment.numberOfStops !== undefined && segment.numberOfStops > 0 && 
+                                                                    <div>
+                                                                        {
+                                                                            segment.stops?.map(stop =>
+                                                                                <div>
+                                                                                    {formatDuration(stop.duration)} in City({stop.iataCode})
+                                                                                </div>
+                                                                            )
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
+                                                )
+                                            }
                                         </div>
-                                        <div className='w-[20%] p-0 pr-15 border flex items-center font-semibold'>
-                                            <div className='w-full flex flex-col'>
-                                                <div className='flex justify-end'>
-                                                    $ {Number(item.price?.grandTotal).toLocaleString()} {item.price?.currency}
-                                                </div>
-                                                <div className='flex justify-end font-medium mb-3'>
-                                                    total
-                                                </div>
-                                                <div className='flex justify-end'>
-                                                    $ {Number(item.travelerPricings?.[0]?.price?.total).toLocaleString()} {item.price?.currency}
-                                                </div>
-                                                <div className='flex justify-end font-medium'>
-                                                    per Traveler
+                                        { 
+                                            item.itineraries != undefined && index != item.itineraries?.length - 1 && 
+                                            <div className='flex items-center justify-center w-full border-3 border-l-white border-r-white'>
+                                                <div className='flex items-center justify-between h-5 w-1/4'>
+                                                    <img src= {ArrowDownIcon} alt='' className='w-4 h-4'/>
+                                                    <img src= {ArrowDownIcon} alt='' className='w-4 h-4'/>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
+                                    </>
                                 )
                             }
+                            </div>
+
+                            <div className='w-[20%] border p-0 pr-15 border flex items-center font-semibold'>
+                                <div className='w-full flex flex-col'>
+                                    <div className='flex justify-end'>
+                                        $ {Number(item.price?.grandTotal).toLocaleString()} {item.price?.currency}
+                                    </div>
+                                    <div className='flex justify-end font-medium mb-3'>
+                                        total
+                                    </div>
+                                    <div className='flex justify-end'>
+                                        $ {Number(item.travelerPricings?.[0]?.price?.total).toLocaleString()} {item.price?.currency}
+                                    </div>
+                                    <div className='flex justify-end font-medium'>
+                                        per Traveler
+                                    </div>
+                                </div>
+                            </div>
                         </Card>
                     )
                 }

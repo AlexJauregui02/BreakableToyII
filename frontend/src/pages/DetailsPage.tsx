@@ -118,10 +118,20 @@ export default function DetailsPage() {
                 <div className='w-[30%]'>
                         <Card className='font-medium h-full'>
                             <div className='h-[50%]'>
-                                <div>Price Breakdown</div>
+                                <div className='text-lg mb-3'>Price Breakdown</div>
                                 <div>Base: $ {handlePriceFormat(results?.data[Number(flightOfferID) - 1]?.price?.base)} ({currency})</div>
-                                <div>Feeds: $ {Number(results?.data[Number(flightOfferID) - 1]?.price?.fees).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ({currency})</div>
                                 <div>Total: $ {Number(results?.data[Number(flightOfferID) - 1]?.price?.grandTotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ({currency})</div>
+                                <div className='mb-2'>Fees: </div>
+                                <div className='border h-1/2 overflow-y-auto font-normal border inset-shadow-sm'>
+                                    {
+                                        typeof flightOfferID === 'string' && results?.data[Number(flightOfferID) - 1].price?.fees?.map(fee => 
+                                            <div className='p-1 border'>
+                                                <div>Amount: {fee.amount}</div>
+                                                <div>Type: {fee.type}</div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
                             <Card className='p-3 h-[50%]'>
                                 Per Traveler
