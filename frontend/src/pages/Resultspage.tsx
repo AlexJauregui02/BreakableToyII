@@ -24,6 +24,8 @@ export default function ResultsPage() {
     const navigate = useNavigate();
     const { results, clearResults } = useFlightOffersResponse();
 
+    console.log(JSON.stringify(results, null, 1));
+
     useEffect(() => {
         if(!results) {
             navigate('/');

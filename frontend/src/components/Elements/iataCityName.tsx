@@ -45,7 +45,7 @@ export function IataCityName({ code }: Props) {
 
     const fetchCity = async (retry = false): Promise<string> => {
       const promise = getCityNameFromIataCode(iataCode)
-        .then((res) => {
+        .then(async (res) => {
           const result = (res as apiResponse<IataCodeAirportSearchResponse>).data.find(
             (item) => item.iataCode.toUpperCase() === iataCode
           );
@@ -55,7 +55,7 @@ export function IataCityName({ code }: Props) {
           if (!name && !retry && !retriedCodes.has(iataCode)) {
             retriedCodes.add(iataCode);
             pendingRequests.delete(iataCode);
-            delay(1000);
+            await delay(1000);
             return fetchCity(true);
           }
 

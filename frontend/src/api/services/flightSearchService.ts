@@ -5,7 +5,7 @@ import type { IataCodeAirlineSearchResponse, IataCodeAirportSearchResponse } fro
 
 
 export async function getFlightOffers(data: FlightSearchOffer): Promise<apiResponse<flightOfferResponse> | undefined> {
-    let url = `/flight-offers?originLocationCode=${data.originLocationCode}&destinationLocationCode=${data.destinationLocationCode}&departureDate=${data.departureDate}&adults=${data.adults}`;
+    let url = `/flight-offers?originLocationCode=${data.originLocationCode}&destinationLocationCode=${data.destinationLocationCode}&departureDate=${data.departureDate}&adults=${data.adults}&max=3`;
 
     if (data.returnDate) { url += `&returnDate=${data.returnDate}`; }
     if (data.nonStop) { url += `&nonStop=true`; }
