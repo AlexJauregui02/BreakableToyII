@@ -1,9 +1,18 @@
 package com.backend.services;
 
+import java.time.Duration;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.backend.models.amadeusResponses.FlightOfferResponse;
+import com.backend.models.amadeusResponses.GenericApiResponse;
 import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import reactor.core.publisher.Mono;
 
@@ -12,9 +21,11 @@ public class ApiClientService {
 
     private final WebClient webClient;
     private final TokenManager TokenManager;
+    private final ObjectMapper objectMapper;
 
     public ApiClientService(WebClient.Builder webClientBuilder, 
-                            TokenManager TokenManager) {
+                            TokenManager TokenManager,
+                            ObjectMapper objectMapper) {
         this.webClient = webClientBuilder
             .baseUrl("https://test.api.amadeus.com")
             .codecs(configurer -> configurer
@@ -23,6 +34,7 @@ public class ApiClientService {
             )
             .build();
         this.TokenManager = TokenManager;
+        this.objectMapper = objectMapper;
     }
     
     private Mono<String> get(String endpoint) {
@@ -92,7 +104,9 @@ public class ApiClientService {
             Boolean nonStop,
             String currencyCode,
             Integer maxPrice,
-            Integer max) {
+            Integer max,
+            String[] sortBy,
+            String sortOrder) {
 
         StringBuilder uriBuilder = new StringBuilder("/v2/shopping/flight-offers?");
         if (originLocationCode != null) uriBuilder.append("originLocationCode=").append(originLocationCode).append("&");
@@ -112,8 +126,54 @@ public class ApiClientService {
 
 
         String uri = uriBuilder.toString();
-        return get(uri);
+
+        return get(uri)
+        .flatMap(json -> {
+            try {
+                JavaType type = objectMapper.getTypeFactory()
+                    .constructParametricType(GenericApiResponse.class, FlightOfferResponse.class);
+
+                GenericApiResponse<FlightOfferResponse> response = objectMapper.readValue(json, type);
+                response.setData(sortOffers(response.getData(), sortBy, sortOrder));
+                return Mono.just(objectMapper.writeValueAsString(response));
+            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+                return Mono.error(new RuntimeException("Error deserializando respuesta", e));
+            }
+        });
     }
+
+    private List<FlightOfferResponse> sortOffers(List<FlightOfferResponse> offers, String[] sortBy, String sortOrder) {
+        Comparator<FlightOfferResponse> comparator = null;
+
+        for (String key : sortBy) {
+            Comparator<FlightOfferResponse> current = switch (key.toLowerCase()) {
+                case "price" -> Comparator.comparing(o -> Double.parseDouble(o.getPrice().getGrandTotal()));
+                case "duration" -> Comparator.comparing(o -> parseDuration(o.getItineraries().get(0).getDuration()));
+                default -> null;
+            };
+
+            if (current != null) {
+                comparator = (comparator == null) ? current : comparator.thenComparing(current);
+            }
+        }
+
+        if (comparator == null) return offers;
+
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            comparator = comparator.reversed();
+        }
+
+        return offers.stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+    private int parseDuration(String isoDuration) {
+        try {
+            return (int) Duration.parse(isoDuration).toMinutes();
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
+
 
     // Return airlines information by airline code
     // Example: /reference-data/airlines?airlineCodes=BA

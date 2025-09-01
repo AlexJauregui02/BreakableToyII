@@ -61,11 +61,13 @@ public class ApiController {
             @RequestParam(value = "nonStop", required = false) Boolean nonStop,
             @RequestParam(value = "currencyCode", required = false) String currencyCode,
             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
-            @RequestParam(value = "max", required = false) Integer max) {
+            @RequestParam(value = "max", required = false) Integer max,
+            @RequestParam(value = "sortBy", defaultValue = "price") String[] sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
 
         return apiClientService.getFlightOffersOnCriteria(
                 originLocationCode, destinationLocationCode, departureDate, returnDate, adults, children, infants, 
-                travelClass, includedAirlineCodes, excludedAirlineCodes, nonStop, currencyCode, maxPrice, max)
+                travelClass, includedAirlineCodes, excludedAirlineCodes, nonStop, currencyCode, maxPrice, max, sortBy, sortOrder)
                 .onErrorComplete(error -> {
                     System.err.println("Error in flightOffersOnCriteria: " + error.getMessage());
                     return true; 
