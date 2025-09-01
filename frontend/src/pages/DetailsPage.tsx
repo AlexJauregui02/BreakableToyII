@@ -47,76 +47,75 @@ export default function DetailsPage() {
             </Button>
 
             <div className='w-full flex gap-5 h-full py-5'>
-                {
-                    typeof flightOfferID === 'string' && results?.data[Number(flightOfferID) - 1]?.itineraries?.map(itinerary => 
-                    <>
-                    <div className='w-[70%] space-y-5 overflow-y-auto p-3 border inset-shadow-sm bg-gray-50 text-sm'>
-                        
-                                <Card className='gap-y-5 font-medium'>
-                                    {
-                                        itinerary.segments.map((segment, index) =>
-                                            <>
-                                            <Card className='flex flex-row gap-5 p-5'>
-                                                <div className='w-[50%]'>
-                                                    <div>Flight {index + 1}</div>
-                                                    <div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
-                                                    <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
-                                                    <div><IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})</div>
+                    <div className='w-[70%] border space-y-5 overflow-y-auto p-3 inset-shadow-sm bg-gray-50 text-sm'>
+                        {
+                            typeof flightOfferID === 'string' && results?.data[Number(flightOfferID) - 1]?.itineraries?.map(itinerary => 
+                            <Card className='gap-y-5 font-medium'>
+                                {
+                                    itinerary.segments.map((segment, index) =>
+                                        <>
+                                        <Card className='flex flex-row gap-5 p-5'>
+                                            <div className='w-[50%]'>
+                                                <div>Flight {index + 1}</div>
+                                                <div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
+                                                <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
+                                                <div><IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})</div>
 
-                                                    <div>Flight number: {segment.number}</div>
-                                                    <div>Aircraft type: {segment.aircraft?.code}</div>
-                                                    <div><IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})</div>
-                                                </div>
-                                                <Card className='w-[50%] p-2'>
-                                                    Travelers fare details
-                                                    <div className='border w-full h-37 inset-shadow-sm text-xs overflow-y-auto'>
-                                                        {
-                                                            results.data[Number(flightOfferID) - 1].travelerPricings?.map(travelerFareDetails =>
-                                                                <div className='p-1 border'>
-                                                                    <div className='w-full mb-1'>Traveler {travelerFareDetails.travelerId}</div>
-                                                                    {
-                                                                        travelerFareDetails.fareDetailsBySegment.map(fareDetailBySegment => {
-                                                                            if (fareDetailBySegment.segmentId === segment.id) {
-                                                                                return (
-                                                                                    <div>
-                                                                                        <div>Cabin: {fareDetailBySegment.cabin}</div>
-                                                                                        <div>Class: {fareDetailBySegment.class}</div>
-                                                                                        <div>Amenties:</div>
-                                                                                        <div className='font-normal'>
-                                                                                            {
-                                                                                                fareDetailBySegment.amenities?.map(amenity =>
-                                                                                                    <div>
-                                                                                                        <div>- {amenity.description}</div>
-                                                                                                    </div>
-                                                                                                )
-                                                                                            }
-                                                                                        </div>
-                                                                                        
+                                                <div>Flight number: {segment.number}</div>
+                                                <div>Aircraft type: {segment.aircraft?.code}</div>
+                                                <div><IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})</div>
+                                            </div>
+                                            <Card className='w-[50%] p-2'>
+                                                Travelers fare details
+                                                <div className='w-full h-37 inset-shadow-sm text-xs overflow-y-auto'>
+                                                    {
+                                                        results.data[Number(flightOfferID) - 1].travelerPricings?.map(travelerFareDetails =>
+                                                            <div className='p-1 border'>
+                                                                <div className='w-full mb-1'>Traveler {travelerFareDetails.travelerId}</div>
+                                                                {
+                                                                    travelerFareDetails.fareDetailsBySegment.map(fareDetailBySegment => {
+                                                                        if (fareDetailBySegment.segmentId === segment.id) {
+                                                                            return (
+                                                                                <div>
+                                                                                    <div>Cabin: {fareDetailBySegment.cabin}</div>
+                                                                                    <div>Class: {fareDetailBySegment.class}</div>
+                                                                                    <div>Amenties:</div>
+                                                                                    <div className='font-normal'>
+                                                                                        {
+                                                                                            fareDetailBySegment.amenities?.map(amenity =>
+                                                                                                <div>
+                                                                                                    <div>- {amenity.description}</div>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
                                                                                     </div>
-                                                                                )
-                                                                            }
-                                                                            return null;
-                                                                        })
-                                                                    }
-                                                                </div>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </Card>
-                                                
-                                            </Card>
-                                            { index != itinerary.segments.length - 1 && 
-                                                <div className='w-full flex justify-center'>
-                                                    <Card className='border w-1/2 flex items-center p-0'>
-                                                        {handleDiffDate(segment.arrival?.at, itinerary.segments[index + 1].departure?.at)}
-                                                    </Card>
+                                                                                    
+                                                                                </div>
+                                                                            )
+                                                                        }
+                                                                        return null;
+                                                                    })
+                                                                }
+                                                            </div>
+                                                        )
+                                                    }
                                                 </div>
-                                            }
-                                            </>
-                                        )}
-                                </Card>
+                                            </Card>
+                                            
+                                        </Card>
+                                        { index != itinerary.segments.length - 1 && 
+                                            <div className='w-full flex justify-center'>
+                                                <Card className='border w-1/2 flex items-center p-0'>
+                                                    {handleDiffDate(segment.arrival?.at, itinerary.segments[index + 1].departure?.at)}
+                                                </Card>
+                                            </div>
+                                        }
+                                        </>
+                                )}
+                            </Card>
+                        )}
                     </div>
-                    <div className='w-[30%]'>
+                <div className='w-[30%]'>
                         <Card className='font-medium h-full'>
                             <div className='h-[50%]'>
                                 <div>Price Breakdown</div>
@@ -126,7 +125,7 @@ export default function DetailsPage() {
                             </div>
                             <Card className='p-3 h-[50%]'>
                                 Per Traveler
-                                <div className='border mt-3 inset-shadow-sm text-sm overflow-y-auto'>
+                                <div className='mt-3 inset-shadow-sm text-sm overflow-y-auto'>
                                     {
                                         typeof flightOfferID === 'string' && results?.data[Number(flightOfferID) - 1].travelerPricings?.map(travelerPricing => 
                                             <div className='border p-1'>
@@ -146,8 +145,6 @@ export default function DetailsPage() {
                             </Card>
                         </Card>
                     </div>
-                    </>
-                )}
             </div>
 
 

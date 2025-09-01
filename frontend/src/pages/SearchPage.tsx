@@ -18,6 +18,12 @@ import { getFlightOffers } from '@/api/services/flightSearchService'
 import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useNavigate } from 'react-router-dom'
 import { AirportAutocomplete } from '@/components/Elements/airportAutoComplete'
+import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 
 function formatDate(date: Date | undefined | null) {
@@ -42,18 +48,30 @@ export default function SearchPage() {
         { label: 'MXN', value: 'MXN' },
     ];
 
+    const [loading, setLoading] = useState(false);
+
     const [originLocationCode, setOriginLocationCode] = useState<string>('');
 
     const [destinationLocationCode, setDestinationLocationCode] = useState<string>('');
 
     const [departureDate, setDepartureDate] = useState<Date | undefined>(undefined);
     const handleDepartureDate = (date: Date | undefined) => {
-        setDepartureDate(date);
+        const departureDate = dayjs(date);
+        if (!departureDate.isSameOrBefore(new Date, 'day')) {
+            setDepartureDate(date);
+        }
+
+        if (departureDate.isSameOrAfter(returnDate, 'day')) {
+            setReturnDate(undefined);
+        }
     }
 
     const [returnDate, setReturnDate] = useState<Date | undefined>(undefined);
     const handleReturnDate = (date: Date | undefined) => {
-        setReturnDate(date);
+        const returnDate = dayjs(date);
+        if (!returnDate.isSameOrBefore(departureDate, 'day')) {
+            setReturnDate(date);
+        }
     }
 
     const [adults, setAdults] = useState<string>('');
@@ -75,6 +93,8 @@ export default function SearchPage() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        setLoading(true);
+
         const flightSearchOffer: FlightSearchOffer = {
             originLocationCode: originLocationCode,
             destinationLocationCode: destinationLocationCode,
@@ -90,7 +110,7 @@ export default function SearchPage() {
            !departureDate ||
            !adults) 
         {
-            alert("Campo faltante");
+            alert('Campo faltante');
             return;
         }
 
@@ -104,152 +124,160 @@ export default function SearchPage() {
         }
         catch (error) {
             console.log('Error')
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
         <div className='flex items-center justify-center h-full w-full'>
-            <Card className='w-1/2 flex items-center h-4/5'>
-                <form onSubmit={handleSubmit} className='flex flex-col items-center'>
+            <Card className='w-1/2 flex items-center h-fit'>
+                <form onSubmit={handleSubmit} className='flex flex-col items-center w-full'>
 
                     <div className='font-semibold mb-3'>FLIGHT SEARCH</div>
 
                     <div className='flex flex-col w-full gap-y-3 mb-4'>
-                        <label className='font-medium'>
-                            Departure Airport:
-                            <AirportAutocomplete
-                                onChange={(option) => setOriginLocationCode(option?.value || '')}
-                            />
-                        </label>
 
-                        <label className='font-medium'>
-                            Arrival Airport:
-                            <AirportAutocomplete
-                                onChange={(option) => setDestinationLocationCode(option?.value || '')}
-                            />
-                        </label>
-
-                        <div className='flex flex-col'>
-                            <label className='font-medium mb-1'>
-                                Departure Date:
-                            </label>
-                            <div className='relative flex gap-2'>
-                                <Input
-                                    placeholder='New Date'
-                                    className='bg-background pr-10'
-                                    value={formatDate(departureDate)}
-                                    required
+                        <div className='flex w-full gap-5 grid grid-cols-1 lg:grid-cols-2'>
+                            <label className='font-medium w-full'>
+                                Departure Airport:
+                                <AirportAutocomplete
+                                    onChange={(option) => setOriginLocationCode(option?.value || '')}
                                 />
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant='ghost'
-                                            className='absolute top-1/2 right-2 size-6 -translate-y-1/2'
+                            </label>
+
+                            <label className='font-medium w-full'>
+                                Arrival Airport:
+                                <AirportAutocomplete
+                                    onChange={(option) => setDestinationLocationCode(option?.value || '')}
+                                />
+                            </label>
+                        </div>
+
+                        <div className='flex flex w-full gap-5 grid grid-cols-1 lg:grid-cols-2'>
+                            <div className='flex flex-col'>
+                                <label className='font-medium mb-1'>
+                                    Departure Date:
+                                </label>
+                                <div className='relative flex gap-2'>
+                                    <Input
+                                        placeholder='New Date'
+                                        className='bg-background pr-10'
+                                        value={formatDate(departureDate)}
+                                    />
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant='ghost'
+                                                className='absolute top-1/2 right-2 size-6 -translate-y-1/2'
+                                            >
+                                                <CalendarIcon className='size-3.5'/>
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className='w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm'
+                                            align='end'
+                                            alignOffset={-8}
+                                            sideOffset={10}
                                         >
-                                            <CalendarIcon className='size-3.5'/>
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent
-                                        className='w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm'
-                                        align='end'
-                                        alignOffset={-8}
-                                        sideOffset={10}
-                                    >
-                                        <Calendar
-                                            mode='single'
-                                            captionLayout='dropdown'
-                                            className='bg-white'
-                                            selected={departureDate}
-                                            onSelect={handleDepartureDate}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
+                                            <Calendar
+                                                mode='single'
+                                                captionLayout='dropdown'
+                                                className='bg-white'
+                                                selected={departureDate}
+                                                onSelect={handleDepartureDate}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            </div>
+
+                            <div className='flex flex-col'>
+                                <label className="font-medium mb-1">
+                                    Return Date (optional):
+                                </label>
+                                <div className='relative flex gap-2'>
+                                    <Input
+                                        placeholder='Returning Date'
+                                        className='bg-background pr-10'
+                                        value={formatDate(returnDate)}
+                                    />
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant='ghost'
+                                                className='absolute top-1/2 right-2 size-6 -translate-y-1/2'
+                                            >
+                                                <CalendarIcon className='size-3.5'/>
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className='w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm'
+                                            align='end'
+                                            alignOffset={-8}
+                                            sideOffset={10}
+                                        >
+                                            <Calendar
+                                                mode='single'
+                                                captionLayout='dropdown'
+                                                className='bg-white'
+                                                selected={returnDate}
+                                                onSelect={handleReturnDate}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
                         </div>
 
-                        <div className='flex flex-col'>
-                            <label className="font-medium mb-1">
-                                Return Date (optional):
-                            </label>
-                            <div className='relative flex gap-2'>
-                                <Input
-                                    placeholder='Returning Date'
-                                    className='bg-background pr-10'
-                                    value={formatDate(returnDate)}
+                        <div className='flex w-full gap-10 grid grid-cols-1 lg:grid-cols-3'>
+                            <div className='flex flex-col'>
+                                <label className="font-medium mb-1">
+                                    Adults:
+                                </label>
+                                <input
+                                    id='adults'
+                                    type='number'
+                                    value={Number(adults)}
+                                    onChange={handleAdults}
+                                    className='h-8 w-full rounded-sm border border-gray-400 px-3 py-1 text-sm shadow-sm'
+                                    min={0}
+                                    max={999}
                                 />
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant='ghost'
-                                            className='absolute top-1/2 right-2 size-6 -translate-y-1/2'
-                                        >
-                                            <CalendarIcon className='size-3.5'/>
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent
-                                        className='w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm'
-                                        align='end'
-                                        alignOffset={-8}
-                                        sideOffset={10}
-                                    >
-                                        <Calendar
-                                            mode='single'
-                                            captionLayout='dropdown'
-                                            className='bg-white'
-                                            selected={returnDate}
-                                            onSelect={handleReturnDate}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
+                            </div>
+
+                            <label className='font-medium'>
+                                Currency (optional):
+                                <Select
+                                    id='currencyCode'
+                                    options={currencyCodeOptions}
+                                    onChange={handleCurrencyCode}
+                                    unstyled
+                                    classNames={{
+                                        control: () => 'mt-1 px-2 rounded-sm border-1 border-gray-400 text-sm shadow-sm',
+                                        option: () => 'bg-white rounded-sm pl-2 py-1',
+                                        menu: () => 'bg-white border-1 border-gray-400 rounded-sm'
+                                    }}
+                                />
+                            </label>
+
+                            <div className='flex items-center'>
+                                <input
+                                    type='checkbox'
+                                    checked={isNonStop}
+                                    onChange={handleIsNonStop}
+                                />
+                                <label className='font-medium ml-2 flex items-center'>
+                                    Non-Stop
+                                </label>
                             </div>
                         </div>
-                        
-                        <div className='flex flex-col'>
-                            <label className="font-medium mb-1">
-                                Adults:
-                            </label>
-                            <input
-                                id='adults'
-                                type='number'
-                                value={Number(adults)}
-                                onChange={handleAdults}
-                                className='h-8 w-full rounded-sm border border-gray-400 px-3 py-1 text-sm shadow-sm'
-                                min={0}
-                                max={999}
-                            />
-                        </div>
-
-                        <label className='font-medium'>
-                            Currency (optional):
-                            <Select
-                                id='currencyCode'
-                                options={currencyCodeOptions}
-                                onChange={handleCurrencyCode}
-                                unstyled
-                                classNames={{
-                                    control: () => 'mt-1 px-2 rounded-sm border-1 border-gray-400 text-sm shadow-sm',
-                                    option: () => 'bg-white rounded-sm pl-2 py-1',
-                                    menu: () => 'bg-white border-1 border-gray-400 rounded-sm'
-                                }}
-                            />
-                        </label>
-
-                        <div>
-                            <input
-                                type='checkbox'
-                                checked={isNonStop}
-                                onChange={handleIsNonStop}
-                            />
-                            <label className='font-medium ml-2'>
-                                Non-Stop
-                            </label>
-                        </div>
-
                     </div>
 
                     <Button
                         type='submit'
                         className='w-3/4'
+                        disabled={loading}
                     >
                         Search
                     </Button>

@@ -7,10 +7,9 @@ import type { SelectOption } from '@/types/option';
 interface Props {
   onChange: (option: SelectOption | null) => void;
   defaultValue?: SelectOption;
-  placeholder?: string;
 }
 
-export function AirportAutocomplete({ onChange, defaultValue, placeholder }: Props) {
+export function AirportAutocomplete({ onChange, defaultValue}: Props) {
   const loadOptions = async (inputValue: string): Promise<SelectOption[]> => {
     if (!inputValue || inputValue.length < 2) return [];
 
@@ -25,11 +24,10 @@ export function AirportAutocomplete({ onChange, defaultValue, placeholder }: Pro
   return (
     <AsyncSelect
       cacheOptions
-      defaultOptions
       loadOptions={loadOptions}
       onChange={onChange}
       defaultValue={defaultValue}
-      placeholder={placeholder || "Search airport..."}
+      placeholder={"Search airport..."}
       unstyled
       classNames={{
         control: () => 'mt-1 px-2 rounded-sm border border-gray-400 text-sm shadow-sm',
