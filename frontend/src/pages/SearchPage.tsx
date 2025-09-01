@@ -17,6 +17,7 @@ import { Card } from '@/components/UI/card/card'
 import { getFlightOffers } from '@/api/services/flightSearchService'
 import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useNavigate } from 'react-router-dom'
+import { AirportAutocomplete } from '@/components/Elements/airportAutoComplete'
 
 
 function formatDate(date: Date | undefined | null) {
@@ -35,18 +36,6 @@ export default function SearchPage() {
     const { setResults } = useFlightOffersResponse();
     const navigate = useNavigate();
 
-    const originLocationCodeOptions: SelectOption[] = [
-        { label: 'Select...', value: '' },
-        { label: 'SFO', value: 'SFO' },
-        { label: 'LAX', value: 'LAX' },
-    ];
-
-    const destinationLocationCodeOptions: SelectOption[] = [
-        { label: 'Select...', value: '' },
-        { label: 'LAX', value: 'LAX' },
-        { label: 'BKK', value: 'BKK' },
-    ];
-
     const currencyCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'USD', value: 'USD' },
@@ -54,16 +43,8 @@ export default function SearchPage() {
     ];
 
     const [originLocationCode, setOriginLocationCode] = useState<string>('');
-    const handleOriginLocationCode = (option: SelectOption | null) => {
-        if (option) setOriginLocationCode(option.value);
-        else setOriginLocationCode('');
-    }
 
     const [destinationLocationCode, setDestinationLocationCode] = useState<string>('');
-    const handleDestinationLocationCode = (option: SelectOption | null) => {
-        if (option) setDestinationLocationCode(option.value);
-        else setDestinationLocationCode('');
-    }
 
     const [departureDate, setDepartureDate] = useState<Date | undefined>(undefined);
     const handleDepartureDate = (date: Date | undefined) => {
@@ -136,31 +117,15 @@ export default function SearchPage() {
                     <div className='flex flex-col w-full gap-y-3 mb-4'>
                         <label className='font-medium'>
                             Departure Airport:
-                            <Select
-                                options={originLocationCodeOptions}
-                                onChange={handleOriginLocationCode}
-                                unstyled
-                                classNames={{
-                                    control: () => 'mt-1 px-2 rounded-sm border-1 border-gray-400 text-sm shadow-sm',
-                                    option: () => 'bg-white rounded-sm pl-2 py-1',
-                                    menu: () => 'bg-white border-1 border-gray-400 rounded-sm'
-                                }}
-                                required
+                            <AirportAutocomplete
+                                onChange={(option) => setOriginLocationCode(option?.value || '')}
                             />
                         </label>
 
                         <label className='font-medium'>
                             Arrival Airport:
-                            <Select
-                                options={destinationLocationCodeOptions}
-                                onChange={handleDestinationLocationCode}
-                                unstyled
-                                classNames={{
-                                    control: () => 'mt-1 px-2 rounded-sm border-1 border-gray-400 text-sm shadow-sm',
-                                    option: () => 'bg-white rounded-sm pl-2 py-1',
-                                    menu: () => 'bg-white border-1 border-gray-400 rounded-sm'
-                                }}
-                                required
+                            <AirportAutocomplete
+                                onChange={(option) => setDestinationLocationCode(option?.value || '')}
                             />
                         </label>
 

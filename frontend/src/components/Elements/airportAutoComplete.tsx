@@ -1,20 +1,17 @@
 import AsyncSelect from 'react-select/async';
 import { searchAirportsByKeyword } from '@/api/services/flightSearchService';
 import type { IataCodeAirportSearchResponse } from '@/types/iataCodeSearch';
+import type { SelectOption } from '@/types/option';
 
-interface OptionType {
-  label: string;
-  value: string;
-}
 
 interface Props {
-  onChange: (option: OptionType | null) => void;
-  defaultValue?: OptionType;
+  onChange: (option: SelectOption | null) => void;
+  defaultValue?: SelectOption;
   placeholder?: string;
 }
 
 export function AirportAutocomplete({ onChange, defaultValue, placeholder }: Props) {
-  const loadOptions = async (inputValue: string): Promise<OptionType[]> => {
+  const loadOptions = async (inputValue: string): Promise<SelectOption[]> => {
     if (!inputValue || inputValue.length < 2) return [];
 
     const results: IataCodeAirportSearchResponse[] = await searchAirportsByKeyword(inputValue);
