@@ -38,7 +38,7 @@ export default function SearchPage() {
     const originLocationCodeOptions: SelectOption[] = [
         { label: 'Select...', value: '' },
         { label: 'SFO', value: 'SFO' },
-        { label: 'SYD', value: 'SYD' },
+        { label: 'LAX', value: 'LAX' },
     ];
 
     const destinationLocationCodeOptions: SelectOption[] = [

@@ -7,7 +7,7 @@ export interface IataCodeAirlineSearchResponse {
     commonName: string;
 }
 
-export interface IataCodeCitySearchResponse {
+export interface IataCodeAirportSearchResponse {
     type: string;
     subType: string;
     name: string;

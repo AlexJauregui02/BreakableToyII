@@ -1,7 +1,7 @@
 import { fetchApi } from "../client"
 import type { apiResponse } from "@/types/apiResponse";
 import type { flightOfferResponse, FlightSearchOffer } from "@/types/flightSearch"
-import type { IataCodeCitySearchResponse } from "@/types/iataCodeSearch";
+import type { IataCodeAirportSearchResponse } from "@/types/iataCodeSearch";
 
 
 export async function getFlightOffers(data: FlightSearchOffer): Promise<apiResponse<flightOfferResponse> | undefined> {
@@ -14,9 +14,9 @@ export async function getFlightOffers(data: FlightSearchOffer): Promise<apiRespo
     return fetchApi<apiResponse<flightOfferResponse>>(url);
 }
 
-export async function getCityNameFromIataCode(iataCode: string): Promise<apiResponse<IataCodeCitySearchResponse> | undefined> {
+export async function getCityNameFromIataCode(iataCode: string): Promise<apiResponse<IataCodeAirportSearchResponse> | undefined> {
 
-    let url = `/airport-and-cities-search?subType=CITY&keyword=${iataCode}`;
+    let url = `/airport-and-cities-search?subType=AIRPORT&keyword=${iataCode}`;
 
-    return fetchApi<apiResponse<IataCodeCitySearchResponse>>(url);
+    return fetchApi<apiResponse<IataCodeAirportSearchResponse>>(url);
 }

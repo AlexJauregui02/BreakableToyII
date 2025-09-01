@@ -4,6 +4,7 @@ import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
+import { IataCityName } from '@/components/Elements/iataCityName'
 
 
 export default function DetailsPage() {
@@ -57,9 +58,9 @@ export default function DetailsPage() {
                                             <Card className='flex flex-row gap-5 p-5'>
                                                 <div className='w-[50%]'>
                                                     <div>Flight {index + 1}</div>
-                                                    <div>Departure: {handleFormatSegmentDate(segment.departure?.at)} | Terminal {segment.departure?.terminal}</div>
-                                                    <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)} | Terminal {segment.arrival?.terminal}</div>
-                                                    <div>City1({segment.departure?.iataCode}) - City2({segment.arrival?.iataCode})</div>
+                                                    <div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
+                                                    <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
+                                                    <div><IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})</div>
 
                                                     <div>Flight number: {segment.number}</div>
                                                     <div>Aircraft type: {segment.aircraft?.code}</div>

@@ -22,8 +22,6 @@ export default function ResultsPage() {
     const navigate = useNavigate();
     const { results, clearResults } = useFlightOffersResponse();
 
-    console.log(JSON.stringify(results?.data[0], null, 1));
-
     useEffect(() => {
         if(!results) {
             navigate('/');
@@ -67,10 +65,10 @@ export default function ResultsPage() {
                                                         {formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
                                                     </div>
                                                     <div className='flex h-10'>
-                                                        <div className='w-[50%]'>
-                                                            <IataCityName code={segment.departure?.iataCode}/> - Ciudad2({segment.arrival?.iataCode})
+                                                        <div className='w-[60%]'>
+                                                            <IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})
                                                         </div>
-                                                        <div className='w-[50%]'>
+                                                        <div className='w-[40%]'>
                                                             <div>
                                                                 {formatDuration(segment.duration)} ({handleNumberstops(segment.numberOfStops)})
                                                             </div>
