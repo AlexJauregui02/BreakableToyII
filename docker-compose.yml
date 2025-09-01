@@ -8,3 +8,23 @@ services:
       - ./backend/.env
     ports:
       - "8080:8080"
+    networks:
+      - breakableToy-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: breakable-toy-2-frontend
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "9090:80"
+    depends_on:
+      - backend
+    networks:
+      - breakableToy-network
+
+networks:
+  breakableToy-network:
+    driver: bridge
