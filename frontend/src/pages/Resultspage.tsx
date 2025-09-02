@@ -4,8 +4,7 @@ import { Card } from '@/components/UI/card/card';
 import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formatDate, formatDuration } from '@/lib/utils';
-import { IataCityName } from '@/components/Elements/iataCityName';
+import { formatDate, formatDuration, handleLocalSearchCityName } from '@/lib/utils';
 import ArrowDownIcon from '@/assets/arrow-down.png'
 
 
@@ -21,7 +20,7 @@ function handleNumberstops(numberStops: number | undefined): string {
 
 export default function ResultsPage() {
     const navigate = useNavigate();
-    const { results, clearResults } = useFlightOffersResponse();
+    const { results, clearResults, clearLocationsName } = useFlightOffersResponse();
 
 
     useEffect(() => {
@@ -34,6 +33,7 @@ export default function ResultsPage() {
 
     const handleReturnToSearchPage = () => {
         clearResults();
+        clearLocationsName();
         navigate('/');
     }
 
@@ -70,7 +70,7 @@ export default function ResultsPage() {
                                                         </div>
                                                         <div className='flex h-10'>
                                                             <div className='w-[60%]'>
-                                                                 ({segment.departure?.iataCode}) -  ({segment.arrival?.iataCode})
+                                                                 {handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.departure?.iataCode}) - {handleLocalSearchCityName(segment.arrival?.iataCode)} ({segment.arrival?.iataCode})
                                                             </div>
                                                             <div className='w-[40%]'>
                                                                 <div>

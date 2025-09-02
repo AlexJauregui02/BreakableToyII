@@ -1,3 +1,4 @@
+import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -29,4 +30,12 @@ export function formatDuration(duration: string | undefined): string {
     const minutes = match[2] ? `${match[2]}m` : '';
 
     return [hours, minutes].filter(Boolean).join(' ');
+}
+
+export function handleLocalSearchCityName(code: string | undefined): string | undefined {
+    const { locationsName } = useFlightOffersResponse();
+
+    if (!code) return '';
+    const cityName = locationsName.find(([iataCode]) => iataCode === code);
+    return cityName ? cityName[1] : undefined;
 }

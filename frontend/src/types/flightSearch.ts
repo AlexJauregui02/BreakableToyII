@@ -11,10 +11,16 @@ export interface FlightSearchOffer {
 }
 
 export type FlightOffersContextType = {
-    results: apiResponse<flightOfferResponse> | null
-    setResults: (data: apiResponse<flightOfferResponse>) => void
-    clearResults: () => void
+    results: apiResponse<flightOfferResponse> | null;
+    setResults: (data: apiResponse<flightOfferResponse>) => void;
+    clearResults: () => void;
+
+    locationsName: LocationsName;
+    setLocationsName: (data: LocationsName) => void;
+    clearLocationsName: () => void;
 }
+
+export type LocationsName = [string, string][];
 
 
 export interface flightOfferResponse {

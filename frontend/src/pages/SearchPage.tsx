@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import type { apiResponse } from '@/types/apiResponse'
-import type { flightOfferResponse, FlightSearchOffer } from '@/types/flightSearch'
+import type { flightOfferResponse, FlightSearchOffer, LocationsName } from '@/types/flightSearch'
 import type { SelectOption } from '@/types/option'
 
 import Select from 'react-select'
@@ -39,7 +39,7 @@ function formatDate(date: Date | undefined | null) {
 }
 
 export default function SearchPage() {
-    const { setResults } = useFlightOffersResponse();
+    const { setResults, setLocationsName } = useFlightOffersResponse();
     const navigate = useNavigate();
 
     const currencyCodeOptions: SelectOption[] = [
@@ -122,22 +122,16 @@ export default function SearchPage() {
 
                 const locations = Object.entries(flightOffers.dictionaries?.locations || {});
 
-                const namedLocations = await Promise.all(
+                const namedLocations: LocationsName = await Promise.all(
                     locations.map(async ([iataCode, location]) => {
-                        console.log('Clave: ' , iataCode);
-                        console.log('Valor: ', location.cityCode, location.countryCode);
-
                         const resNamedLocations = await getCityNameFromIataCode(iataCode);
+                        const cityName = resNamedLocations?.data[0].name ?? 'Unknown';
                         
-                        console.log('Respuesta: ', iataCode, ' : ', resNamedLocations);
-                        return {
-                            iataCode,
-                            ...location,
-                            cityName: resNamedLocations?.data?.[0]?.name ?? 'Unknown',
-                        };
+                        return [iataCode, cityName];
                     })
                 )
-
+                setLocationsName(namedLocations);
+                
                 console.log('todas las ubicaciones con nombre: ', namedLocations);
 
                 navigate('/results');

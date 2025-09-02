@@ -1,5 +1,5 @@
 import type { apiResponse } from "@/types/apiResponse";
-import type { flightOfferResponse, FlightOffersContextType } from "@/types/flightSearch"
+import type { flightOfferResponse, FlightOffersContextType, LocationsName } from "@/types/flightSearch"
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 
@@ -7,12 +7,16 @@ const FlightOffersContext = createContext<FlightOffersContextType | undefined>(u
 
 export const FlightResultsProvider = ({ children }: { children: ReactNode }) => {
     const [results, setResultsState] = useState<apiResponse<flightOfferResponse> | null>(null);
+    const [ locationsName, setLocationsNameState ] = useState<LocationsName>([]);
 
     const setResults = (data: apiResponse<flightOfferResponse>) => { setResultsState(data) }
     const clearResults = () => setResultsState(null);
 
+    const setLocationsName = (data: LocationsName) => { setLocationsNameState(data) }
+    const clearLocationsName = () => setLocationsNameState([]);
+
     return (
-        <FlightOffersContext.Provider value={{ results, setResults, clearResults }}>
+        <FlightOffersContext.Provider value={{ results, setResults, clearResults, locationsName, setLocationsName, clearLocationsName }}>
             {children}
         </FlightOffersContext.Provider>
     )

@@ -4,7 +4,7 @@ import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { IataCityName } from '@/components/Elements/iataCityName'
+import { handleLocalSearchCityName } from '@/lib/utils'
 
 
 export default function DetailsPage() {
@@ -58,7 +58,7 @@ export default function DetailsPage() {
                                                 <div>Flight {index + 1}</div>
                                                 <div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
                                                 <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
-                                                <div><IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})</div>
+                                                <div>{handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.departure?.iataCode}) - {handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.arrival?.iataCode})</div>
 
                                                 <div>Flight number: {segment.number}</div>
                                                 <div>Aircraft type: {segment.aircraft?.code}</div>
