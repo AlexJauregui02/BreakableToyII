@@ -13,12 +13,11 @@ import com.backend.models.tokenResponse;
 public class TokenManager {
     
     private String accessToken;
-
     private final Environment env;
 
     // TODO: Consider a better way to initialize the token manager, 
     // it starts fetching the token twice.
-    private TokenManager(Environment env) {
+    public TokenManager(Environment env) {
         this.env = env;
         fetchAccessToken();
     }
@@ -26,8 +25,12 @@ public class TokenManager {
     private final WebClient webClient = WebClient.builder()
             .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
             .build();
+    
+    protected WebClient getWebClient() {
+        return this.webClient;
+    }
 
-    private void fetchAccessToken() {
+    public void fetchAccessToken() {
         String clientID = env.getProperty("CLIENT_ID");
         String clientSecret = env.getProperty("CLIENT_SECRET");
 
@@ -39,7 +42,7 @@ public class TokenManager {
         body.add("client_secret", clientSecret);
 
         try {
-            tokenResponse response = webClient.post()
+            tokenResponse response = getWebClient().post()
                     .uri("https://test.api.amadeus.com/v1/security/oauth2/token")
                     .bodyValue(body)
                     .retrieve()
@@ -52,7 +55,7 @@ public class TokenManager {
     }
 
     @Scheduled(fixedRate = 1500 * 1000)
-    private void refreshAccessToken() {
+    public void refreshAccessToken() {
         fetchAccessToken();
     }
 
