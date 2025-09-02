@@ -1,5 +1,5 @@
 import type { apiResponse } from "@/types/apiResponse";
-import type { flightOfferResponse, FlightOffersContextType, LocationsName } from "@/types/flightSearch"
+import type { flightOfferResponse, FlightOffersContextType, LocationsName, FlightSearchOffer } from "@/types/flightSearch"
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 
@@ -8,6 +8,7 @@ const FlightOffersContext = createContext<FlightOffersContextType | undefined>(u
 export const FlightResultsProvider = ({ children }: { children: ReactNode }) => {
     const [results, setResultsState] = useState<apiResponse<flightOfferResponse> | null>(null);
     const [ locationsName, setLocationsNameState ] = useState<LocationsName>([]);
+    const [ searchParams, setSearchParamsState ] = useState<FlightSearchOffer | null>(null);
 
     const setResults = (data: apiResponse<flightOfferResponse>) => { setResultsState(data) }
     const clearResults = () => setResultsState(null);
@@ -15,8 +16,19 @@ export const FlightResultsProvider = ({ children }: { children: ReactNode }) => 
     const setLocationsName = (data: LocationsName) => { setLocationsNameState(data) }
     const clearLocationsName = () => setLocationsNameState([]);
 
+    const setSearchParams = (data: FlightSearchOffer) => { setSearchParamsState(data) }
+
     return (
-        <FlightOffersContext.Provider value={{ results, setResults, clearResults, locationsName, setLocationsName, clearLocationsName }}>
+        <FlightOffersContext.Provider 
+            value={{ 
+                results, 
+                setResults, 
+                clearResults, 
+                locationsName, 
+                setLocationsName, 
+                clearLocationsName, 
+                searchParams, 
+                setSearchParams }}>
             {children}
         </FlightOffersContext.Provider>
     )

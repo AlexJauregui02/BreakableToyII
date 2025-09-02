@@ -39,7 +39,7 @@ function formatDate(date: Date | undefined | null) {
 }
 
 export default function SearchPage() {
-    const { setResults, setLocationsName } = useFlightOffersResponse();
+    const { setResults, setLocationsName, setSearchParams } = useFlightOffersResponse();
     const navigate = useNavigate();
 
     const currencyCodeOptions: SelectOption[] = [
@@ -110,7 +110,8 @@ export default function SearchPage() {
            !departureDate ||
            !adults) 
         {
-            alert('Campo faltante');
+            alert('Missing Field');
+            setLoading(false);
             return;
         }
 
@@ -124,21 +125,24 @@ export default function SearchPage() {
 
                 const namedLocations: LocationsName = await Promise.all(
                     locations.map(async ([iataCode, location]) => {
-                        const resNamedLocations = await getCityNameFromIataCode(iataCode);
-                        const cityName = resNamedLocations?.data[0].name ?? 'Unknown';
-                        
-                        return [iataCode, cityName];
+                        try {
+                            const resNamedLocations = await getCityNameFromIataCode(iataCode, location.countryCode ?? '');
+                            const cityName = resNamedLocations?.data?.[0]?.name ?? '';
+                            return [iataCode, cityName];
+                        } catch (error) {
+                            console.error(`Error obtaining city name from ${iataCode}:`, error);
+                            return [iataCode, 'Unkown']; 
+                        }
                     })
                 )
                 setLocationsName(namedLocations);
-                
-                console.log('todas las ubicaciones con nombre: ', namedLocations);
+                setSearchParams(flightSearchOffer);
 
                 navigate('/results');
             }
         }
         catch (error) {
-            console.log('Error')
+            console.log('Error: ', error)
         } finally {
             setLoading(false);
         }

@@ -58,7 +58,7 @@ export default function DetailsPage() {
                                                 <div>Flight {index + 1}</div>
                                                 <div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
                                                 <div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
-                                                <div>{handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.departure?.iataCode}) - {handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.arrival?.iataCode})</div>
+                                                <div>{handleLocalSearchCityName(segment.departure?.iataCode)} ({segment.departure?.iataCode}) - {handleLocalSearchCityName(segment.arrival?.iataCode)} ({segment.arrival?.iataCode})</div>
 
                                                 <div>Flight number: {segment.number}</div>
                                                 <div>Aircraft type: {segment.aircraft?.code}</div>

@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration, handleLocalSearchCityName } from '@/lib/utils';
 import ArrowDownIcon from '@/assets/arrow-down.png'
+import { SortControls } from '@/components/Elements/sortControls';
 
 
 function handleNumberstops(numberStops: number | undefined): string {
@@ -21,7 +22,6 @@ function handleNumberstops(numberStops: number | undefined): string {
 export default function ResultsPage() {
     const navigate = useNavigate();
     const { results, clearResults, clearLocationsName } = useFlightOffersResponse();
-
 
     useEffect(() => {
         if(!results) {
@@ -43,7 +43,7 @@ export default function ResultsPage() {
 
     return (
         <div className='h-full py-5 space-y-5'>
-            <div className='text-md'>
+            <div className='flex text-md justify-between'>
                 <Button
                     type='submit'
                     className='w-1/5'
@@ -51,6 +51,9 @@ export default function ResultsPage() {
                 >
                     Return to search
                 </Button>
+                <div className='w-1/3'>
+                    <SortControls/>
+                </div>
             </div>
             <div className='h-[95%] border overflow-y-auto inset-shadow-sm p-3 bg-gray-100'>
                 {

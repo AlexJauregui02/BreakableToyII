@@ -5,18 +5,20 @@ import type { IataCodeAirlineSearchResponse, IataCodeAirportSearchResponse } fro
 
 
 export async function getFlightOffers(data: FlightSearchOffer): Promise<apiResponse<flightOfferResponse> | undefined> {
-    let url = `/flight-offers?originLocationCode=${data.originLocationCode}&destinationLocationCode=${data.destinationLocationCode}&departureDate=${data.departureDate}&adults=${data.adults}&max=3`;
+    let url = `/flight-offers?originLocationCode=${data.originLocationCode}&destinationLocationCode=${data.destinationLocationCode}&departureDate=${data.departureDate}&adults=${data.adults}&max=10`;
 
     if (data.returnDate) { url += `&returnDate=${data.returnDate}`; }
     if (data.nonStop) { url += `&nonStop=true`; }
     if (data.currencyCode) { url += `&currencyCode=${data.currencyCode}`; }
+    if (data.sortBy) { url += `&sortBy=${data.sortBy}`; }
+    if (data.sortOrder) { url += `&sortOrder=${data.sortOrder}`; }
 
     return fetchApi<apiResponse<flightOfferResponse>>(url);
 }
 
-export async function getCityNameFromIataCode(iataCode: string): Promise<apiResponse<IataCodeAirportSearchResponse> | undefined> {
+export async function getCityNameFromIataCode(iataCode: string, countryCode: string): Promise<apiResponse<IataCodeAirportSearchResponse> | undefined> {
 
-    let url = `/airport-and-cities-search?subType=AIRPORT&keyword=${iataCode}`;
+    let url = `/airport-and-cities-search?subType=AIRPORT&keyword=${iataCode}&countryCode=${countryCode}`;
 
     return fetchApi<apiResponse<IataCodeAirportSearchResponse>>(url);
 }

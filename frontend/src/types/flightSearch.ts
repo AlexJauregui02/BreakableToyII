@@ -8,9 +8,14 @@ export interface FlightSearchOffer {
     adults: string;
     nonStop: boolean;
     currencyCode: String;
+    sortBy?: string;
+    sortOrder?: SortOrder;
+    max?: number;
 }
 
-export type FlightOffersContextType = {
+export type SortOrder = 'asc' | 'desc';
+
+export interface FlightOffersContextType {
     results: apiResponse<flightOfferResponse> | null;
     setResults: (data: apiResponse<flightOfferResponse>) => void;
     clearResults: () => void;
@@ -18,10 +23,12 @@ export type FlightOffersContextType = {
     locationsName: LocationsName;
     setLocationsName: (data: LocationsName) => void;
     clearLocationsName: () => void;
+
+    searchParams: FlightSearchOffer | null;
+    setSearchParams: (params: FlightSearchOffer) => void;
 }
 
 export type LocationsName = [string, string][];
-
 
 export interface flightOfferResponse {
     type: string;
