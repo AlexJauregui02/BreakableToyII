@@ -1,13 +1,17 @@
 package com.backend.models.amadeusResponses;
 
-public class AdditionalServices {
-    private String amount;
-    private String type;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    // Getters and Setters
+@JsonIgnoreProperties(ignoreUnknown = true)
+class AdditionalService {
+    private String amount;
+    private AdditionalServiceType type;
+
     public String getAmount() { return amount; }
     public void setAmount(String amount) { this.amount = amount; }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public AdditionalServiceType getType() { return type; }
+    public void setType(AdditionalServiceType type) { this.type = type; }
 }
+enum AdditionalServiceType { CHECKED_BAGS, MEALS, SEATS, OTHER_SERVICES }
+

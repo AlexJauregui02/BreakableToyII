@@ -1,10 +1,12 @@
 package com.backend.models.amadeusResponses;
 
-public class Tax {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Tax {
     private String amount;
     private String code;
 
-    // Getters and Setters
     public String getAmount() { return amount; }
     public void setAmount(String amount) { this.amount = amount; }
 

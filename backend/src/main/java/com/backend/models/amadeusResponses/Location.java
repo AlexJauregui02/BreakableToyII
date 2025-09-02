@@ -7,7 +7,6 @@ public class Location {
     private String cityCode;
     private String countryCode;
 
-    // Getters and Setters
     public String getCityCode() { return cityCode; }
     public void setCityCode(String cityCode) { this.cityCode = cityCode; }
 

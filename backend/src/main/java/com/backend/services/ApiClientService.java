@@ -151,8 +151,12 @@ public class ApiClientService {
 
         for (String key : sortBy) {
             Comparator<FlightOfferResponse> current = switch (key.toLowerCase()) {
-                case "price" -> Comparator.comparing(o -> Double.parseDouble(o.getPrice().getGrandTotal()));
-                case "duration" -> Comparator.comparing(o -> parseDuration(o.getItineraries().get(0).getDuration()));
+                case "price" -> java.util.Comparator.<FlightOfferResponse>comparingDouble(
+                    o -> safeParseDouble(o != null && o.getPrice() != null ? o.getPrice().getGrandTotal() : null)
+                );
+                case "duration" -> java.util.Comparator.<FlightOfferResponse>comparingInt(
+                    o -> parseDuration(firstItineraryDuration(o))
+                );
                 default -> null;
             };
 
@@ -162,19 +166,29 @@ public class ApiClientService {
         }
 
         if (comparator == null) return offers;
-
-        if ("desc".equalsIgnoreCase(sortOrder)) {
-            comparator = comparator.reversed();
-        }
+        if ("desc".equalsIgnoreCase(sortOrder)) comparator = comparator.reversed();
 
         return offers.stream().sorted(comparator).collect(Collectors.toList());
     }
 
-    private int parseDuration(String isoDuration) {
+    private static String firstItineraryDuration(FlightOfferResponse o) {
+        if (o == null || o.getItineraries() == null || o.getItineraries().isEmpty()) return null;
+        return o.getItineraries().get(0).getDuration();
+    }
+
+    private static int parseDuration(String isoDuration) {
         try {
-            return (int) Duration.parse(isoDuration).toMinutes();
+            return (isoDuration == null) ? Integer.MAX_VALUE : (int) Duration.parse(isoDuration).toMinutes();
         } catch (Exception e) {
             return Integer.MAX_VALUE;
+        }
+    }
+
+    private static double safeParseDouble(String s) {
+        try {
+            return (s == null) ? Double.POSITIVE_INFINITY : Double.parseDouble(s);
+        } catch (Exception e) {
+            return Double.POSITIVE_INFINITY;
         }
     }
 

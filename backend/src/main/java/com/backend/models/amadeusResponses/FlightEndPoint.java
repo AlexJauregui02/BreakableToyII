@@ -1,11 +1,13 @@
 package com.backend.models.amadeusResponses;
 
-public class FlightEndPoint {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class FlightEndPoint {
     private String iataCode;
     private String terminal;
     private String at;
 
-    // Getters and Setters
     public String getIataCode() { return iataCode; }
     public void setIataCode(String iataCode) { this.iataCode = iataCode; }
 

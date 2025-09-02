@@ -1,22 +1,31 @@
 package com.backend.models.amadeusResponses;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Segment {
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Segment {
     private String id;
     private Integer numberOfStops;
     private Boolean blacklistedInEU;
-    private List<Co2Emission> co2Emissions;
+
+    @JsonProperty("co2Emissions")
+    private List<CO2Emission> co2Emissions;
+
     private FlightEndPoint departure;
     private FlightEndPoint arrival;
+
     private String carrierCode;
     private String number;
     private AircraftEquipment aircraft;
     private OperatingFlight operating;
     private String duration;
+
+    @JsonProperty("stops")
     private List<FlightStop> stops;
 
-    // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -26,8 +35,8 @@ public class Segment {
     public Boolean getBlacklistedInEU() { return blacklistedInEU; }
     public void setBlacklistedInEU(Boolean blacklistedInEU) { this.blacklistedInEU = blacklistedInEU; }
 
-    public List<Co2Emission> getCo2Emissions() { return co2Emissions; }
-    public void setCo2Emissions(List<Co2Emission> co2Emissions) { this.co2Emissions = co2Emissions; }
+    public List<CO2Emission> getCo2Emissions() { return co2Emissions; }
+    public void setCo2Emissions(List<CO2Emission> co2Emissions) { this.co2Emissions = co2Emissions; }
 
     public FlightEndPoint getDeparture() { return departure; }
     public void setDeparture(FlightEndPoint departure) { this.departure = departure; }

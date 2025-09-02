@@ -1,12 +1,13 @@
 package com.backend.models.amadeusResponses;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Itinerary {
     private String duration;
     private List<Segment> segments;
 
-    // Getters and Setters
     public String getDuration() { return duration; }
     public void setDuration(String duration) { this.duration = duration; }
 

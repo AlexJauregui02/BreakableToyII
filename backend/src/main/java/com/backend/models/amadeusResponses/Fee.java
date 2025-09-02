@@ -1,13 +1,16 @@
 package com.backend.models.amadeusResponses;
 
-public class Fee {
-    private String amount;
-    private String type;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    // Getters and Setters
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Fee {
+    private String amount;
+    private FeeType type;
+
     public String getAmount() { return amount; }
     public void setAmount(String amount) { this.amount = amount; }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public FeeType getType() { return type; }
+    public void setType(FeeType type) { this.type = type; }
 }
+enum FeeType { TICKETING, FORM_OF_PAYMENT, SUPPLIER }

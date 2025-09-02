@@ -9,7 +9,6 @@ public class GenericApiResponse<T> {
     private List<T> data;
     private Dictionaries dictionaries;
 
-    // Getters and Setters
     public Meta getMeta() { return meta; }
     public void setMeta(Meta meta) { this.meta = meta; }
 

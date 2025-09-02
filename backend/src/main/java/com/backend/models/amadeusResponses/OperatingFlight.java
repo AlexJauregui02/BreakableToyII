@@ -1,9 +1,11 @@
 package com.backend.models.amadeusResponses;
 
-public class OperatingFlight {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class OperatingFlight {
     private String carrierCode;
 
-    // Getter and Setter
     public String getCarrierCode() { return carrierCode; }
     public void setCarrierCode(String carrierCode) { this.carrierCode = carrierCode; }
 }

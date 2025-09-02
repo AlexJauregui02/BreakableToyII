@@ -1,11 +1,13 @@
 package com.backend.models.amadeusResponses;
 
-public class BaggageAllowance {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class BaggageAllowance {
     private Integer quantity;
     private Integer weight;
     private String weightUnit;
 
-    // Getters and Setters
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 

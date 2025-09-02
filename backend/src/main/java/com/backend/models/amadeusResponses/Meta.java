@@ -4,7 +4,6 @@ public class Meta {
     private int count;
     private MetaLink links;
 
-    // Getters and Setters
     public int getCount() { return count; }
     public void setCount(int count) { this.count = count; }
 

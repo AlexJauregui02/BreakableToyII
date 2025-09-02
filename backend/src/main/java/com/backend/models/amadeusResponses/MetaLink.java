@@ -8,7 +8,6 @@ public class MetaLink {
     private String first;
     private String up;
 
-    // Getters and Setters
     public String getSelf() { return self; }
     public void setSelf(String self) { this.self = self; }
 

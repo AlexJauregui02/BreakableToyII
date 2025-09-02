@@ -1,8 +1,12 @@
 package com.backend.models.amadeusResponses;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FlightOfferResponse {
+
     private String type;
     private String id;
     private String source;
@@ -18,9 +22,11 @@ public class FlightOfferResponse {
     private Price price;
     private PricingOptions pricingOptions;
     private List<String> validatingAirlineCodes;
-    private List<TravelerPricing> travelersPricings;
 
-    // Getters and Setters
+    @JsonProperty("travelerPricings") // OJO: nombre exacto según JSON
+    private List<TravelerPricing> travelerPricings;
+
+    /* Getters/Setters */
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
@@ -34,7 +40,7 @@ public class FlightOfferResponse {
     public void setInstantTicketingRequired(Boolean instantTicketingRequired) { this.instantTicketingRequired = instantTicketingRequired; }
 
     public Boolean getDisablePricing() { return disablePricing; }
-    public void setDisablePricing(Boolean disablePricing) {this.disablePricing = disablePricing; }
+    public void setDisablePricing(Boolean disablePricing) { this.disablePricing = disablePricing; }
 
     public Boolean getNonHomogeneous() { return nonHomogeneous; }
     public void setNonHomogeneous(Boolean nonHomogeneous) { this.nonHomogeneous = nonHomogeneous; }
@@ -66,6 +72,6 @@ public class FlightOfferResponse {
     public List<String> getValidatingAirlineCodes() { return validatingAirlineCodes; }
     public void setValidatingAirlineCodes(List<String> validatingAirlineCodes) { this.validatingAirlineCodes = validatingAirlineCodes; }
 
-    public List<TravelerPricing> getTravelersPricings() { return travelersPricings; }
-    public void setTravelersPricing(List<TravelerPricing> travelerPricings) { this.travelersPricings = travelerPricings; }
+    public List<TravelerPricing> getTravelerPricings() { return travelerPricings; }
+    public void setTravelerPricings(List<TravelerPricing> travelerPricings) { this.travelerPricings = travelerPricings; }
 }

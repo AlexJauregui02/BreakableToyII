@@ -1,12 +1,14 @@
 package com.backend.models.amadeusResponses;
 
-public class ChargeableCheckedBags {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class ChargeableCheckedBags {
     private Integer quantity;
     private Integer weight;
     private String weightUnit;
     private String id;
 
-    // Getters and Setters
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 

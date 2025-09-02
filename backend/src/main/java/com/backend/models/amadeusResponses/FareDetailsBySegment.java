@@ -2,25 +2,38 @@ package com.backend.models.amadeusResponses;
 
 import java.util.List;
 
-public class FareDetailsBySegment {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class FareDetailsBySegment {
     private String segmentId;
-    private String cabin;
+    private TravelClass cabin;
     private String fareBasis;
     private String brandedFare;
-    private String flightClass;
+
+    private String brandedFareLabel;
+
+    @JsonProperty("class")
+    private String bookingClass;
+
     private Boolean isAllotment;
     private AllotmentDetails allotmentDetails;
-    private String sliceDiceIndicator;
+    private SliceDiceIndicator sliceDiceIndicator;
+
     private BaggageAllowance includedCheckedBags;
+
     private AdditionalServicesRequest additionalServices;
+
     private List<Amenity> amenities;
 
-    // Getters and Setters
+    private IncludedCabinBags includedCabinBags;
+
     public String getSegmentId() { return segmentId; }
     public void setSegmentId(String segmentId) { this.segmentId = segmentId; }
 
-    public String getCabin() { return cabin; }
-    public void setCabin(String cabin) { this.cabin = cabin; }
+    public TravelClass getCabin() { return cabin; }
+    public void setCabin(TravelClass cabin) { this.cabin = cabin; }
 
     public String getFareBasis() { return fareBasis; }
     public void setFareBasis(String fareBasis) { this.fareBasis = fareBasis; }
@@ -28,17 +41,20 @@ public class FareDetailsBySegment {
     public String getBrandedFare() { return brandedFare; }
     public void setBrandedFare(String brandedFare) { this.brandedFare = brandedFare; }
 
-    public String getFlightClass() { return flightClass; }
-    public void setFlightClass(String flightClass) { this.flightClass = flightClass; }
+    public String getBrandedFareLabel() { return brandedFareLabel; }
+    public void setBrandedFareLabel(String brandedFareLabel) { this.brandedFareLabel = brandedFareLabel; }
 
-    public Boolean getIsAllotment() { return isAllotment; }
-    public void setIsAllotment(Boolean isAllotment) { this.isAllotment = isAllotment; }
+    public String getBookingClass() { return bookingClass; }
+    public void setBookingClass(String bookingClass) { this.bookingClass = bookingClass; }
+
+    public Boolean getAllotment() { return isAllotment; }
+    public void setAllotment(Boolean allotment) { isAllotment = allotment; }
 
     public AllotmentDetails getAllotmentDetails() { return allotmentDetails; }
     public void setAllotmentDetails(AllotmentDetails allotmentDetails) { this.allotmentDetails = allotmentDetails; }
 
-    public String getSliceDiceIndicator() { return sliceDiceIndicator; }
-    public void setSliceDiceIndicator(String sliceDiceIndicator) { this.sliceDiceIndicator = sliceDiceIndicator; }
+    public SliceDiceIndicator getSliceDiceIndicator() { return sliceDiceIndicator; }
+    public void setSliceDiceIndicator(SliceDiceIndicator sliceDiceIndicator) { this.sliceDiceIndicator = sliceDiceIndicator; }
 
     public BaggageAllowance getIncludedCheckedBags() { return includedCheckedBags; }
     public void setIncludedCheckedBags(BaggageAllowance includedCheckedBags) { this.includedCheckedBags = includedCheckedBags; }
@@ -48,4 +64,10 @@ public class FareDetailsBySegment {
 
     public List<Amenity> getAmenities() { return amenities; }
     public void setAmenities(List<Amenity> amenities) { this.amenities = amenities; }
+
+    public IncludedCabinBags getIncludedCabinBags() { return includedCabinBags; }
+    public void setIncludedCabinBags(IncludedCabinBags includedCabinBags) { this.includedCabinBags = includedCabinBags; }
 }
+
+enum SliceDiceIndicator { LOCAL_AVAILABILITY, SUB_OD_AVAILABILITY_1, SUB_OD_AVAILABILITY_2 }
+enum TravelClass { ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST }

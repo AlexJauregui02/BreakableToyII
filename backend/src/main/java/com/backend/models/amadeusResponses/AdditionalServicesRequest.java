@@ -2,13 +2,15 @@ package com.backend.models.amadeusResponses;
 
 import java.util.List;
 
-public class AdditionalServicesRequest {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class AdditionalServicesRequest {
     private ChargeableCheckedBags chargeableCheckedBags;
     private ChargeableSeat chargeableSeat;
     private String chargeableSeatNumber;
-    private List<String> otherServices;
+    private List<ServiceName> otherServices;
 
-    // Getters and Setters
     public ChargeableCheckedBags getChargeableCheckedBags() { return chargeableCheckedBags; }
     public void setChargeableCheckedBags(ChargeableCheckedBags chargeableCheckedBags) { this.chargeableCheckedBags = chargeableCheckedBags; }
 
@@ -18,6 +20,6 @@ public class AdditionalServicesRequest {
     public String getChargeableSeatNumber() { return chargeableSeatNumber; }
     public void setChargeableSeatNumber(String chargeableSeatNumber) { this.chargeableSeatNumber = chargeableSeatNumber; }
 
-    public List<String> getOtherServices() { return otherServices; }
-    public void setOtherServices(List<String> otherServices) { this.otherServices = otherServices; }
+    public List<ServiceName> getOtherServices() { return otherServices; }
+    public void setOtherServices(List<ServiceName> otherServices) { this.otherServices = otherServices; }
 }
