@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.backend.models.amadeusResponses.FlightOfferResponse;
 import com.backend.models.amadeusResponses.GenericApiResponse;
 import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -127,16 +128,40 @@ public class ApiClientService {
 
         String uri = uriBuilder.toString();
 
+        // return get(uri)
+        // .flatMap(json -> {
+        //     try {
+        //         JavaType type = objectMapper.getTypeFactory()
+        //             .constructParametricType(GenericApiResponse.class, FlightOfferResponse.class);
+
+        //         GenericApiResponse<FlightOfferResponse> response =
+        //             objectMapper.readValue(json, type);
+
+        //         response.setData(sortOffers(response.getData(), sortBy, sortOrder));
+
+        //         return Mono.just(objectMapper.writeValueAsString(response));
+        //     } catch (JsonProcessingException e) {
+        //         return Mono.error(new RuntimeException("Error deserializando respuesta", e));
+        //     }
+        // });
+
         return get(uri)
         .flatMap(json -> {
+            System.out.println("👉 Json recibido:\n" + json);
+
             try {
                 JavaType type = objectMapper.getTypeFactory()
                     .constructParametricType(GenericApiResponse.class, FlightOfferResponse.class);
 
-                GenericApiResponse<FlightOfferResponse> response = objectMapper.readValue(json, type);
+                GenericApiResponse<FlightOfferResponse> response =
+                    objectMapper.readValue(json, type);
+
                 response.setData(sortOffers(response.getData(), sortBy, sortOrder));
+
                 return Mono.just(objectMapper.writeValueAsString(response));
-            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            } catch (JsonProcessingException e) {
+                System.err.println("Error parseando JSON: " + e.getMessage());
+                System.err.println("JSON recibido: " + json);
                 return Mono.error(new RuntimeException("Error deserializando respuesta", e));
             }
         });

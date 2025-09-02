@@ -16,6 +16,9 @@ public class FlightOfferResponse {
     private Integer numberOfBookableSeats;
     private List<Itinerary> itineraries;
     private Price price;
+    private PricingOptions pricingOptions;
+    private List<String> validatingAirlineCodes;
+    private List<TravelerPricing> travelersPricings;
 
     // Getters and Setters
     public String getType() { return type; }
@@ -56,4 +59,13 @@ public class FlightOfferResponse {
 
     public Price getPrice() { return price; }
     public void setPrice(Price price) { this.price = price; }
+
+    public PricingOptions getPricingOptions() { return pricingOptions; }
+    public void setPricingOptions(PricingOptions pricingOptions) { this.pricingOptions = pricingOptions; }
+
+    public List<String> getValidatingAirlineCodes() { return validatingAirlineCodes; }
+    public void setValidatingAirlineCodes(List<String> validatingAirlineCodes) { this.validatingAirlineCodes = validatingAirlineCodes; }
+
+    public List<TravelerPricing> getTravelersPricings() { return travelersPricings; }
+    public void setTravelersPricing(List<TravelerPricing> travelerPricings) { this.travelersPricings = travelerPricings; }
 }

@@ -2,28 +2,15 @@ package com.backend.models.amadeusResponses;
 
 import java.util.List;
 
-public class Price {
-    private String margin;
-    private String grandTotal;
-    private String billingCurrency;
+public class PriceTravelerPricing {
     private String currency;
     private String total;
     private String base;
     private String refundableTaxes;
-    private List<AdditionalServices> additionalServices;
     private List<Fee> fees;
     private List<Tax> taxes;
 
     // Getters and Setters
-    public String getMargin() { return margin; }
-    public void setMargin(String margin) { this.margin = margin; }
-
-    public String getGrandTotal() { return grandTotal; }
-    public void setGrandTotal(String grandTotal) { this.grandTotal = grandTotal; }
-
-    public String getBillingCurrency() { return billingCurrency; }
-    public void setBillingCurrency(String billingCurrency) { this.billingCurrency = billingCurrency; }
-
     public String getCurrency() { return currency; }
     public void setCurrency(String currency) { this.currency = currency; }
 
@@ -35,9 +22,6 @@ public class Price {
 
     public String getRefundableTaxes() { return refundableTaxes; }
     public void setRefundableTaxes(String refundableTaxes) { this.refundableTaxes = refundableTaxes; }
-
-    public List<AdditionalServices> getAdditionalServices() { return additionalServices; }
-    public void setAdditionalServices(List<AdditionalServices> additionalServices) { this.additionalServices = additionalServices; }
 
     public List<Fee> getFees() { return fees; }
     public void setFees(List<Fee> fees) { this.fees = fees; }
