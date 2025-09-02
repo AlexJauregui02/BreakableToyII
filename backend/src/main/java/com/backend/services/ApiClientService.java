@@ -205,10 +205,11 @@ public class ApiClientService {
 
     // TODO: Add missing method for AirportAndCitiesSearch: /{locationId}
     // Example: /reference-data/locations?subType=AIRPORT&keyword=London&page[limit]=10&page[offset]=0&sort=rank&view=FULL
-    public Mono<String> airportAndCitiesSearch(String subType, String keyword, Integer page, Integer offset, String sort, String view) {
+    public Mono<String> airportAndCitiesSearch(String subType, String keyword, Integer page, Integer offset, String sort, String view, String countryCode) {
         StringBuilder uriBuilder = new StringBuilder("/v1/reference-data/locations?");
         if (subType != null) uriBuilder.append("subType=").append(subType).append("&");
         if (keyword != null) uriBuilder.append("keyword=").append(keyword).append("&");
+        if (countryCode != null) uriBuilder.append("countryCode=").append(countryCode).append("&");
         if (page != null) uriBuilder.append("page[limit]=").append(page).append("&");
         if (offset != null) uriBuilder.append("page[offset]=").append(offset).append("&");
         if (sort != null) uriBuilder.append("sort=").append(sort).append("&");

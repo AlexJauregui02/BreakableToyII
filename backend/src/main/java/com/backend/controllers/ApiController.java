@@ -27,9 +27,10 @@ public class ApiController {
             @RequestParam(value = "pageLimit", required = false) Integer page,
             @RequestParam(value = "pageOffset", required = false) Integer offset,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "view", required = false) String view) {
+            @RequestParam(value = "view", required = false) String view,
+            @RequestParam(value = "countryCode", required = false) String countryCode) {
 
-        return apiClientService.airportAndCitiesSearch(subType, keyword, page, offset, sort, view)
+        return apiClientService.airportAndCitiesSearch(subType, keyword, page, offset, sort, view, countryCode)
                 .onErrorComplete(error -> {
                     System.err.println("Error in AirportAndCitiesMatch: " + error.getMessage());
                     return true; 
