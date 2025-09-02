@@ -1,12 +1,9 @@
 package com.backend.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
 import com.backend.services.ApiClientService;
 
 import reactor.core.publisher.Mono;
@@ -71,15 +68,6 @@ public class ApiController {
                 travelClass, includedAirlineCodes, excludedAirlineCodes, nonStop, currencyCode, maxPrice, max, sortBy, sortOrder)
                 .onErrorComplete(error -> {
                     System.err.println("Error in flightOffersOnCriteria: " + error.getMessage());
-                    return true; 
-                });
-    }
-
-    @PostMapping("/api/flight-offers")
-    public Mono<String> postFlightOffersOnCriteria(@RequestBody(required = true) flightOfferBodyResponse body) {
-        return apiClientService.postFlightOffersOnCriteria(body)
-                .onErrorComplete(error -> {
-                    System.err.println("Error in postFlightOffersOnCriteria: " + error.getMessage());
                     return true; 
                 });
     }

@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.backend.models.amadeusResponses.FlightOfferResponse;
 import com.backend.models.amadeusResponses.GenericApiResponse;
-import com.backend.models.flightOfferTypes.flightOfferBodyResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,37 +50,6 @@ public class ApiClientService {
                     if (error instanceof org.springframework.web.reactive.function.client.WebClientResponseException) {
                         System.err.println("Response body: " + ((org.springframework.web.reactive.function.client.WebClientResponseException) error).getResponseBodyAsString());
                     }
-                });
-    }
-
-    // TODO: Generalize POST method for other endpoints
-    private Mono<String> post(String endpoint, Object body) {
-        String AccessToken = TokenManager.getAccessToken();
-
-        return webClient.post()
-                .uri(endpoint)
-                .header("Authorization", "Bearer " + AccessToken)
-                .header("X-HTTP-Method-Override", "GET")
-                .bodyValue(body)
-                .retrieve()
-                .bodyToMono(String.class)
-                .doOnError(error -> {
-                    System.err.println("Error making POST request: " + error.getMessage());
-                    if (error instanceof org.springframework.web.reactive.function.client.WebClientResponseException) {
-                        System.err.println("Response body: " + ((org.springframework.web.reactive.function.client.WebClientResponseException) error).getResponseBodyAsString());
-                    }
-                });
-    }
-
-    // Return flight offers based on criteria using POST
-    // Example: /shopping/flight-offers
-    public Mono<String> postFlightOffersOnCriteria(flightOfferBodyResponse body) {
-        
-        String endpoint = "/v2/shopping/flight-offers";
-        return post(endpoint, body)
-                .onErrorComplete(error -> {
-                    System.err.println("Error in postFlightOffersOnCriteria: " + error.getMessage());
-                    return true; 
                 });
     }
 
