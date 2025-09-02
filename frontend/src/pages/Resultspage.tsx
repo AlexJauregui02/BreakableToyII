@@ -58,16 +58,23 @@ export default function ResultsPage() {
             <div className='h-[95%] border overflow-y-auto inset-shadow-sm p-3 bg-gray-100'>
                 {
                     results.data.map(item =>
-                        <Card onClick={() => handleDetailsPage(item.id)} className='border-0 m-4 p-0 text-sm hover:shadow-xl transition-shadow flex flex-row'>
+                        <Card 
+                            key={item.id}
+                            onClick={() => handleDetailsPage(item.id)} 
+                            className='border-0 m-4 p-0 text-sm hover:shadow-xl transition-shadow flex flex-row'
+                        >
                             <div className='w-[80%]'>
                             {
                                 item.itineraries?.map((itinerary, index) =>
-                                    <>
+                                    <div key={index}>
                                     <div className='w-full'>
                                         <div className='w-full'>
                                             {
-                                                itinerary.segments.map(segment => 
-                                                    <div className='border w-full p-4'>
+                                                itinerary.segments.map((segment, index) => 
+                                                    <div
+                                                        key={index} 
+                                                        className='border w-full p-4'
+                                                    >
                                                         <div>
                                                             {formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
                                                         </div>
@@ -109,7 +116,7 @@ export default function ResultsPage() {
                                             </div>
                                         }
                                     </div>
-                                    </>
+                                    </div>
                                 )
                             }
                             </div>
