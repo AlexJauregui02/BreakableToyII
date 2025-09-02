@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration } from '@/lib/utils';
 import { IataCityName } from '@/components/Elements/iataCityName';
-import { IataAirlineName } from '@/components/Elements/iataAirlineName';
 import ArrowDownIcon from '@/assets/arrow-down.png'
 
 
@@ -24,7 +23,6 @@ export default function ResultsPage() {
     const navigate = useNavigate();
     const { results, clearResults } = useFlightOffersResponse();
 
-    console.log(JSON.stringify(results, null, 1));
 
     useEffect(() => {
         if(!results) {
@@ -72,7 +70,7 @@ export default function ResultsPage() {
                                                         </div>
                                                         <div className='flex h-10'>
                                                             <div className='w-[60%]'>
-                                                                <IataCityName code={segment.departure?.iataCode}/> ({segment.departure?.iataCode}) - <IataCityName code={segment.arrival?.iataCode}/> ({segment.arrival?.iataCode})
+                                                                 ({segment.departure?.iataCode}) -  ({segment.arrival?.iataCode})
                                                             </div>
                                                             <div className='w-[40%]'>
                                                                 <div>
@@ -92,7 +90,7 @@ export default function ResultsPage() {
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <IataAirlineName code={segment.carrierCode}/> ({segment.carrierCode})
+                                                            {results.dictionaries?.carriers?.[segment.carrierCode ?? ''] ?? 'unknown'} ({segment.carrierCode})
                                                         </div>
                                                     </div>
                                                 )

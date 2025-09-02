@@ -14,7 +14,7 @@ import { Button } from '@/components/UI/button/button'
 import { Input } from '@/components/UI/input/input'
 import { Calendar } from '@/components/UI/calendar/calendar'
 import { Card } from '@/components/UI/card/card'
-import { getFlightOffers } from '@/api/services/flightSearchService'
+import { getCityNameFromIataCode, getFlightOffers } from '@/api/services/flightSearchService'
 import { useFlightOffersResponse } from '@/context/FlightOffersContext'
 import { useNavigate } from 'react-router-dom'
 import { AirportAutocomplete } from '@/components/Elements/airportAutoComplete'
@@ -119,6 +119,27 @@ export default function SearchPage() {
 
             if (flightOffers !== undefined) {
                 setResults(flightOffers);
+
+                const locations = Object.entries(flightOffers.dictionaries?.locations || {});
+
+                const namedLocations = await Promise.all(
+                    locations.map(async ([iataCode, location]) => {
+                        console.log('Clave: ' , iataCode);
+                        console.log('Valor: ', location.cityCode, location.countryCode);
+
+                        const resNamedLocations = await getCityNameFromIataCode(iataCode);
+                        
+                        console.log('Respuesta: ', iataCode, ' : ', resNamedLocations);
+                        return {
+                            iataCode,
+                            ...location,
+                            cityName: resNamedLocations?.data?.[0]?.name ?? 'Unknown',
+                        };
+                    })
+                )
+
+                console.log('todas las ubicaciones con nombre: ', namedLocations);
+
                 navigate('/results');
             }
         }
