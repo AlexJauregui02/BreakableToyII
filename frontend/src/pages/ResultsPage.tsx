@@ -3,10 +3,10 @@ import { Card } from "@/components/UI/card/card";
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { formaDateToHrMin, formatDuration, handleLocalSearchCityName } from "@/lib/utils";
+import { formaDateToHrMin, formatDuration, iataCodeCitySearch } from "@/lib/utils";
 import ArrowDownIcon from "@/assets/arrow-down.png";
 import { SortControls } from "@/components/Elements/sortControls/sortControls";
-import { handleNumberstops } from "@/lib/utils";
+import { handleNumberstops, formatPrice } from "@/lib/utils";
 
 
 export default function ResultsPage() {
@@ -60,9 +60,9 @@ export default function ResultsPage() {
 													</div>
 													<div className="flex h-10">
 														<div className="w-[60%]">
-															{handleLocalSearchCityName(segment.departure?.iataCode)} (
+															{iataCodeCitySearch(segment.departure?.iataCode)} (
 															{segment.departure?.iataCode}) -{" "}
-															{handleLocalSearchCityName(segment.arrival?.iataCode)} (
+															{iataCodeCitySearch(segment.arrival?.iataCode)} (
 															{segment.arrival?.iataCode})
 														</div>
 														<div className="w-[40%]">
@@ -106,12 +106,11 @@ export default function ResultsPage() {
 						<div className="w-[20%] border p-0 pr-15 border flex items-center font-semibold">
 							<div className="w-full flex flex-col">
 								<div className="flex justify-end">
-									$ {Number(item.price?.grandTotal).toLocaleString()} {item.price?.currency}
+									$ {formatPrice(item.price?.grandTotal)} {item.price?.currency}
 								</div>
 								<div className="flex justify-end font-medium mb-3">total</div>
 								<div className="flex justify-end">
-									$ {Number(item.travelerPricings?.[0]?.price?.total).toLocaleString()}{" "}
-									{item.price?.currency}
+									$ {formatPrice(item.travelerPricings?.[0]?.price?.total)} {item.price?.currency} 
 								</div>
 								<div className="flex justify-end font-medium">per Traveler</div>
 							</div>

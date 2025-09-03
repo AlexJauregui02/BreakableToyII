@@ -3,35 +3,18 @@ import { Card } from "@/components/UI/card/card";
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import dayjs from "dayjs";
-import { handleLocalSearchCityName } from "@/lib/utils";
+import { 
+	iataCodeCitySearch, 
+	fornmatToCompleteDate, 
+	diffBetweenDate,
+	formatPrice 
+} from "@/lib/utils";
 
 export default function DetailsPage() {
 	const navigate = useNavigate();
 	const { flightOfferID } = useParams();
 	const { results } = useFlightOffersResponse();
 	const currency = results?.data[0].price?.currency;
-
-	const handleFormatSegmentDate = (date: string | undefined): string => {
-		if (!date) return "";
-		return dayjs(date).format("YYYY-MM-DD HH:mm a");
-	};
-
-	const handleDiffDate = (date_1: string | undefined, date_2: string | undefined): string => {
-		const date1 = dayjs(date_1);
-		const date2 = dayjs(date_2);
-		const diffMinutes = date2.diff(date1, "minute");
-
-		return `${Math.floor(diffMinutes / 60)} hrs & ${diffMinutes % 60} mins`;
-	};
-
-	const handlePriceFormat = (price: string | undefined): string => {
-		if (!price) return "";
-		return Number(price).toLocaleString("en-US", {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		});
-	};
 
 	const handleReturnToResultsPage = () => {
 		navigate("/results");
@@ -53,12 +36,12 @@ export default function DetailsPage() {
 										<Card className="flex flex-row gap-5 p-5">
 											<div className="w-[50%]">
 												<div>Flight {index + 1}</div>
-												<div>Departure: {handleFormatSegmentDate(segment.departure?.at)}</div>
-												<div>Arrival: {handleFormatSegmentDate(segment.arrival?.at)}</div>
+												<div>Departure: {fornmatToCompleteDate(segment.departure?.at)}</div>
+												<div>Arrival: {fornmatToCompleteDate(segment.arrival?.at)}</div>
 												<div>
-													{handleLocalSearchCityName(segment.departure?.iataCode)} (
+													{iataCodeCitySearch(segment.departure?.iataCode)} (
 													{segment.departure?.iataCode}) -{" "}
-													{handleLocalSearchCityName(segment.arrival?.iataCode)} (
+													{iataCodeCitySearch(segment.arrival?.iataCode)} (
 													{segment.arrival?.iataCode})
 												</div>
 
@@ -114,7 +97,7 @@ export default function DetailsPage() {
 										{index != itinerary.segments.length - 1 && (
 											<div className="w-full flex justify-center items-center mt-5">
 												<Card className="border w-1/2 flex items-center p-0">
-													{handleDiffDate(
+													{diffBetweenDate(
 														segment.arrival?.at,
 														itinerary.segments[index + 1].departure?.at
 													)}
@@ -131,7 +114,7 @@ export default function DetailsPage() {
 						<div className="h-[50%]">
 							<div className="text-lg mb-3">Price Breakdown</div>
 							<div>
-								Base: $ {handlePriceFormat(results?.data[Number(flightOfferID) - 1]?.price?.base)} (
+								Base: $ {formatPrice(results?.data[Number(flightOfferID) - 1]?.price?.base)} (
 								{currency})
 							</div>
 							<div>
@@ -166,10 +149,10 @@ export default function DetailsPage() {
 												Traveler {travelerPricing.travelerId}
 												<div className="mt-2 space-y-1">
 													<div>
-														Base: ${handlePriceFormat(travelerPricing.price?.base)} ({currency})
+														Base: ${formatPrice(travelerPricing.price?.base)} ({currency})
 													</div>
 													<div>
-														Total: ${handlePriceFormat(travelerPricing.price?.total)} ({currency})
+														Total: ${formatPrice(travelerPricing.price?.total)} ({currency})
 													</div>
 												</div>
 											</div>

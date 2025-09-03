@@ -1,5 +1,6 @@
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { clsx, type ClassValue } from "clsx";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,6 +37,30 @@ export function formatToLongDate(date: Date | undefined | null) {
 	});
 }
 
+// Returns complete date format (ej.) 2025-09-04 11:45 am
+export function fornmatToCompleteDate(date: string | undefined): string {
+	if (!date) return "";
+	return dayjs(date).format("YYYY-MM-DD HH:mm a");
+};
+
+// Gives the time between two dates
+export function diffBetweenDate(date_1: string | undefined, date_2: string | undefined): string {
+	const date1 = dayjs(date_1);
+	const date2 = dayjs(date_2);
+	const diffMinutes = date2.diff(date1, "minute");
+
+	return `${Math.floor(diffMinutes / 60)} hrs & ${diffMinutes % 60} mins`;
+};
+
+// Returns the price with cents (ej.) 688.62
+export function formatPrice(price: string | undefined): string {
+		if (!price) return "";
+		return Number(price).toLocaleString("en-US", {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		});
+	};
+
 export function formatDuration(duration: string | undefined): string {
 
 	if (!duration) return "";
@@ -62,7 +87,7 @@ export function handleNumberstops(numberStops: number | undefined): string {
 	return numberOfStops;
 }
 
-export function handleLocalSearchCityName(code: string | undefined): string | undefined {
+export function iataCodeCitySearch(code: string | undefined): string | undefined {
 	const { locationsName } = useFlightOffersResponse();
 
 	if (!code) return "";
