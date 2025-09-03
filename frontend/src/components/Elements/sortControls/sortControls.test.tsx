@@ -3,6 +3,7 @@ import { vi, type Mock } from "vitest";
 import { SortControls } from "./sortControls";
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 
+
 vi.mock("@/context/FlightOffersContext", () => ({
   useFlightOffersResponse: vi.fn(),
 }));
