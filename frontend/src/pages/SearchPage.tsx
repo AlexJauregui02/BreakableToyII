@@ -1,41 +1,25 @@
 import { useState } from "react";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.css";
 
 import type { apiResponse } from "@/types/apiResponse";
 import type { flightOfferResponse, FlightSearchOffer, LocationsName } from "@/types/flightSearch";
 import type { SelectOption } from "@/types/option";
 
-import Select from "react-select";
-import "react-datepicker/dist/react-datepicker.css";
-
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
-
 import { Button } from "@/components/UI/button/button";
-import { Input } from "@/components/UI/input/input";
-import { Calendar } from "@/components/UI/calendar/calendar";
 import { Card } from "@/components/UI/card/card";
 import { getCityNameFromIataCode, getFlightOffers } from "@/api/services/flightSearchService";
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
-import { useNavigate } from "react-router-dom";
 import { AirportAutocomplete } from "@/components/Elements/airportAutoComplete/airportAutoComplete";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import { DateSelect } from "@/components/Elements/dateSelect/dateSelect";
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-function formatDate(date: Date | undefined | null) {
-	if (!date) {
-		return "";
-	}
-
-	return date.toLocaleDateString("en-US", {
-		day: "2-digit",
-		month: "long",
-		year: "numeric",
-	});
-}
 
 export default function SearchPage() {
 	const { setResults, setLocationsName, setSearchParams } = useFlightOffersResponse();
@@ -173,72 +157,12 @@ export default function SearchPage() {
 						<div className="flex flex w-full gap-5 grid grid-cols-1 lg:grid-cols-2">
 							<div className="flex flex-col">
 								<label className="font-medium mb-1">Departure Date:</label>
-								<div className="relative flex gap-2">
-									<Input
-										placeholder="New Date"
-										className="bg-background pr-10"
-										value={formatDate(departureDate)}
-									/>
-									<Popover>
-										<PopoverTrigger asChild>
-											<Button
-												variant="ghost"
-												className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
-											>
-												<CalendarIcon className="size-3.5" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent
-											className="w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm"
-											align="end"
-											alignOffset={-8}
-											sideOffset={10}
-										>
-											<Calendar
-												mode="single"
-												captionLayout="dropdown"
-												className="bg-white"
-												selected={departureDate}
-												onSelect={handleDepartureDate}
-											/>
-										</PopoverContent>
-									</Popover>
-								</div>
+								<DateSelect date={departureDate} onChange={handleDepartureDate}/>
 							</div>
 
 							<div className="flex flex-col">
 								<label className="font-medium mb-1">Return Date (optional):</label>
-								<div className="relative flex gap-2">
-									<Input
-										placeholder="Returning Date"
-										className="bg-background pr-10"
-										value={formatDate(returnDate)}
-									/>
-									<Popover>
-										<PopoverTrigger asChild>
-											<Button
-												variant="ghost"
-												className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
-											>
-												<CalendarIcon className="size-3.5" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent
-											className="w-auto overflow-hidden p-0 z-50 border border-gray-300 shadow-md rounded-sm"
-											align="end"
-											alignOffset={-8}
-											sideOffset={10}
-										>
-											<Calendar
-												mode="single"
-												captionLayout="dropdown"
-												className="bg-white"
-												selected={returnDate}
-												onSelect={handleReturnDate}
-											/>
-										</PopoverContent>
-									</Popover>
-								</div>
+								<DateSelect date={returnDate} onChange={handleReturnDate}/>
 							</div>
 						</div>
 

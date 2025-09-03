@@ -3,7 +3,7 @@ import { Card } from "@/components/UI/card/card";
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatDate, formatDuration, handleLocalSearchCityName } from "@/lib/utils";
+import { formaDateToHrMin, formatDuration, handleLocalSearchCityName } from "@/lib/utils";
 import ArrowDownIcon from "@/assets/arrow-down.png";
 import { SortControls } from "@/components/Elements/sortControls/sortControls";
 
@@ -67,7 +67,7 @@ export default function ResultsPage() {
 											{itinerary.segments.map((segment, index) => (
 												<div key={index} className="border w-full p-4">
 													<div>
-														{formatDate(segment.departure?.at)} - {formatDate(segment.arrival?.at)}
+														{formaDateToHrMin(segment.departure?.at)} - {formaDateToHrMin(segment.arrival?.at)}
 													</div>
 													<div className="flex h-10">
 														<div className="w-[60%]">

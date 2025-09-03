@@ -6,7 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function formatDate(date: string | undefined): string {
+// Returns local time (ej.) 3:45pm
+export function formaDateToHrMin(date: string | undefined): string {
+
 	if (!date) return "";
 	let formattedDate = new Date(date)
 		.toLocaleTimeString("en-US", {
@@ -21,7 +23,21 @@ export function formatDate(date: string | undefined): string {
 	return formattedDate;
 }
 
+// Returns to long date (ej.) September 03, 2025 
+export function formatToLongDate(date: Date | undefined | null) {
+	if (!date) {
+		return "";
+	}
+
+	return date.toLocaleDateString("en-US", {
+		day: "2-digit",
+		month: "long",
+		year: "numeric",
+	});
+}
+
 export function formatDuration(duration: string | undefined): string {
+
 	if (!duration) return "";
 
 	const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
