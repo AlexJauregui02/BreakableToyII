@@ -1,19 +1,15 @@
-import * as React from 'react'
+import * as React from "react";
 
-import { cn } from '../../../lib/utils'
+import { cn } from "../../../lib/utils";
 
-type CardProps = React.PropsWithChildren<React.ComponentProps<'div'>>;
+type CardProps = React.PropsWithChildren<React.ComponentProps<"div">>;
 
-function Card({
-    className,
-    children,
-    ...props
-}: CardProps) {
+function Card({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'bg-white flex flex-col rounded p-10 shadow-md border border-gray-300',
-        className,
+        "bg-white flex flex-col rounded p-10 shadow-md border border-gray-300",
+        className
       )}
       {...props}
     >
@@ -22,4 +18,4 @@ function Card({
   );
 }
 
-export { Card }
+export { Card };

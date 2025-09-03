@@ -13,52 +13,50 @@ import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { getFlightOffers } from "@/api/services/flightSearchService";
 import type { apiResponse } from "@/types/apiResponse";
 
-
 export function SortControls() {
-    const [sortBy, setSortBy] = useState('price');
-    const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-    const [loading, setLoading] = useState<boolean>(false);
-    const { searchParams, setResults } = useFlightOffersResponse();
+  const [sortBy, setSortBy] = useState("price");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [loading, setLoading] = useState<boolean>(false);
+  const { searchParams, setResults } = useFlightOffersResponse();
 
-    const onApplySort = async () => {
-        if (!searchParams) return;
+  const onApplySort = async () => {
+    if (!searchParams) return;
 
-        setLoading(true);
+    setLoading(true);
 
-        const paramsWithSort = {
-            ...searchParams,
-            sortBy: sortBy,
-            sortOrder: sortOrder,
-        };
-
-        const newQuery = await getFlightOffers(paramsWithSort) as apiResponse<flightOfferResponse>;
-
-        setResults({ ...newQuery });
-        
-        setLoading(false);
+    const paramsWithSort = {
+      ...searchParams,
+      sortBy: sortBy,
+      sortOrder: sortOrder,
     };
 
-    return (
-        <div className="flex gap-2 items-center justify-end w-full">
-            <Select onValueChange={(value) => setSortBy(value)} defaultValue="price">
-                <SelectTrigger className="w-1/2">
-                    <SelectValue placeholder="Order by" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="price">Price</SelectItem>
-                    <SelectItem value="duration">Duration</SelectItem>
-                    <SelectItem value="price,duration">Both</SelectItem>
-                </SelectContent>
-            </Select>
+    const newQuery = (await getFlightOffers(paramsWithSort)) as apiResponse<flightOfferResponse>;
 
-            <Button
-                variant="outline"
-                onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-            >
-                {sortOrder === 'asc' ? '↑' : '↓'}
-            </Button>
+    setResults({ ...newQuery });
 
-            <Button onClick={onApplySort} disabled={loading}>Apply</Button>
-        </div>
-    );
+    setLoading(false);
+  };
+
+  return (
+    <div className="flex gap-2 items-center justify-end w-full">
+      <Select onValueChange={(value) => setSortBy(value)} defaultValue="price">
+        <SelectTrigger className="w-1/2">
+          <SelectValue placeholder="Order by" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="price">Price</SelectItem>
+          <SelectItem value="duration">Duration</SelectItem>
+          <SelectItem value="price,duration">Both</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Button variant="outline" onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
+        {sortOrder === "asc" ? "↑" : "↓"}
+      </Button>
+
+      <Button onClick={onApplySort} disabled={loading}>
+        Apply
+      </Button>
+    </div>
+  );
 }
