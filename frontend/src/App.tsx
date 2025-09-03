@@ -7,19 +7,19 @@ import DetailsPage from "@/pages/DetailsPage";
 import { FlightResultsProvider } from "./context/FlightOffersContext";
 
 export default function App() {
-  return (
-    <div className="h-screen flex p-3">
-      <Card className="flex-1 px-30">
-        <FlightResultsProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<SearchPage />} />
-              <Route path="/results" element={<ResultPage />} />
-              <Route path="/results/:flightOfferID" element={<DetailsPage />} />
-            </Routes>
-          </Router>
-        </FlightResultsProvider>
-      </Card>
-    </div>
-  );
+	return (
+		<div className="h-screen flex p-3">
+			<Card className="flex-1 px-30">
+				<FlightResultsProvider>
+					<Router>
+						<Routes>
+							<Route path="/" element={<SearchPage />} />
+							<Route path="/results" element={<ResultPage />} />
+							<Route path="/results/:flightOfferID" element={<DetailsPage />} />
+						</Routes>
+					</Router>
+				</FlightResultsProvider>
+			</Card>
+		</div>
+	);
 }
