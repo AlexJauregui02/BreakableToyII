@@ -1,6 +1,6 @@
 import type { flightOfferResponse, SortOrder } from "@/types/flightSearch";
 import { useState } from "react";
-import { Button } from "../UI/button/button";
+import { Button } from "../../UI/button/button";
 import {
   Select,
   SelectContent,

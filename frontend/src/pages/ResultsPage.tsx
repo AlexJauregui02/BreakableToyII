@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDuration, handleLocalSearchCityName } from '@/lib/utils';
 import ArrowDownIcon from '@/assets/arrow-down.png'
-import { SortControls } from '@/components/Elements/sortControls';
+import { SortControls } from '@/components/Elements/sortControls/sortControls';
 
 
 function handleNumberstops(numberStops: number | undefined): string {
