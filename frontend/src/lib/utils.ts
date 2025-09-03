@@ -49,6 +49,19 @@ export function formatDuration(duration: string | undefined): string {
 	return [hours, minutes].filter(Boolean).join(" ");
 }
 
+export function handleNumberstops(numberStops: number | undefined): string {
+	let numberOfStops;
+	if (numberStops == 0) {
+		numberOfStops = "Nonstop";
+	} else if (numberStops == 1) {
+		numberOfStops = "1 Stop";
+	} else {
+		numberOfStops = numberOfStops + "Stops";
+	}
+
+	return numberOfStops;
+}
+
 export function handleLocalSearchCityName(code: string | undefined): string | undefined {
 	const { locationsName } = useFlightOffersResponse();
 

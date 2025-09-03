@@ -6,19 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { formaDateToHrMin, formatDuration, handleLocalSearchCityName } from "@/lib/utils";
 import ArrowDownIcon from "@/assets/arrow-down.png";
 import { SortControls } from "@/components/Elements/sortControls/sortControls";
+import { handleNumberstops } from "@/lib/utils";
 
-function handleNumberstops(numberStops: number | undefined): string {
-	let numberOfStops;
-	if (numberStops == 0) {
-		numberOfStops = "Nonstop";
-	} else if (numberStops == 1) {
-		numberOfStops = "1 Stop";
-	} else {
-		numberOfStops = numberOfStops + "Stops";
-	}
-
-	return numberOfStops;
-}
 
 export default function ResultsPage() {
 	const navigate = useNavigate();
