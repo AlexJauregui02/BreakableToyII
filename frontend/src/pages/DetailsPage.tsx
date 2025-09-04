@@ -114,25 +114,19 @@ export default function DetailsPage() {
 						<div className="h-[50%]">
 							<div className="text-lg mb-3">Price Breakdown</div>
 							<div>
-								Base: $ {formatPrice(results?.data[Number(flightOfferID) - 1]?.price?.base)} (
-								{currency})
+								Base: $ {formatPrice(results?.data[Number(flightOfferID) - 1]?.price?.base)}
+								({currency})
 							</div>
 							<div>
 								Total: ${" "}
-								{Number(results?.data[Number(flightOfferID) - 1]?.price?.grandTotal).toLocaleString(
-									"en-US",
-									{
-										minimumFractionDigits: 2,
-										maximumFractionDigits: 2,
-									}
-								)}{" "}
+								{formatPrice(results?.data[Number(flightOfferID) - 1]?.price?.grandTotal)}
 								({currency})
 							</div>
 							<div className="mb-2">Fees: </div>
 							<div className="border h-1/2 overflow-y-auto font-normal border inset-shadow-sm">
 								{typeof flightOfferID === "string" &&
 									results?.data[Number(flightOfferID) - 1].price?.fees?.map((fee, index) => (
-										<div key={index} className="p-1 border">
+										<div key={index} className="p-1 border text-sm">
 											<div>Amount: {fee.amount}</div>
 											<div>Type: {fee.type}</div>
 										</div>

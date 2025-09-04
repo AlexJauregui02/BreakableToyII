@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { DateSelect } from "@/components/Elements/dateSelect/dateSelect";
+import { toast } from "sonner";
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -88,8 +89,15 @@ export default function SearchPage() {
 			currencyCode: currencyCode,
 		};
 
-		if (!originLocationCode || !destinationLocationCode || !departureDate || !adults) {
-			alert("Missing Field");
+		if (!originLocationCode || 
+			!destinationLocationCode || 
+			!departureDate || 
+			!adults) {
+			
+			toast.warning('Missing Field!', { 
+				description: 'There is a field missing',
+				position: 'top-center'
+			});
 			setLoading(false);
 			return;
 		}
@@ -125,7 +133,9 @@ export default function SearchPage() {
 				navigate("/results");
 			}
 		} catch (error) {
-			console.log("Error: ", error);
+			toast.error('An error occured, try again later!',{
+				position: 'top-center'
+			});
 		} finally {
 			setLoading(false);
 		}
