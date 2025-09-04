@@ -12,6 +12,7 @@ import {
 import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { getFlightOffers } from "@/api/services/flightSearchService";
 import type { apiResponse } from "@/types/apiResponse";
+import { toast } from "sonner";
 
 export function SortControls() {
 	const [sortBy, setSortBy] = useState("price");
@@ -30,9 +31,14 @@ export function SortControls() {
 			sortOrder: sortOrder,
 		};
 
-		const newQuery = (await getFlightOffers(paramsWithSort)) as apiResponse<flightOfferResponse>;
-
-		setResults({ ...newQuery });
+		try {
+			const newQuery = (await getFlightOffers(paramsWithSort)) as apiResponse<flightOfferResponse>;
+			setResults({ ...newQuery });	
+		} catch {
+			toast.error('An error occured, try again later!', {
+				position: 'top-center'
+			})
+		}
 
 		setLoading(false);
 	};
