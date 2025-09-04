@@ -10,14 +10,14 @@ export async function fetchApi<T>(
 	options: RequestInit = {}
 ): Promise<T | undefined> {
 	const url = `${API_BASE_URL}${endpoint}`;
-	console.log(`Fetching ${url}`);
+	// console.log(`Fetching ${url}`);
 	const response = await fetch(url, {
 		headers: {
 			"Content-Type": "application/json",
 		},
 		...options,
 	});
-	console.log(`Response status: ${response.status}`);
+	// console.log(`Response status: ${response.status}`);
 
 	if (!response.ok) {
 		const errorData: ApiError = await response.json();

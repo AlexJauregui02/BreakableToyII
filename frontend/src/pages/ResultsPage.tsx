@@ -59,13 +59,13 @@ export default function ResultsPage() {
 														{formaDateToHrMin(segment.departure?.at)} - {formaDateToHrMin(segment.arrival?.at)}
 													</div>
 													<div className="flex h-10">
-														<div className="w-[60%]">
+														<div className="w-[70%] mr-6">
 															{iataCodeCitySearch(segment.departure?.iataCode)} (
 															{segment.departure?.iataCode}) -{" "}
 															{iataCodeCitySearch(segment.arrival?.iataCode)} (
 															{segment.arrival?.iataCode})
 														</div>
-														<div className="w-[40%]">
+														<div className="w-[30%]">
 															<div>
 																{formatDuration(segment.duration)} (
 																{handleNumberstops(segment.numberOfStops)})
@@ -103,8 +103,8 @@ export default function ResultsPage() {
 							))}
 						</div>
 
-						<div className="w-[20%] border p-0 pr-15 border flex items-center font-semibold">
-							<div className="w-full flex flex-col">
+						<div className="w-[20%] border flex items-center justify-center font-semibold">
+							<div className="flex flex-col items-start">
 								<div className="flex justify-end">
 									$ {formatPrice(item.price?.grandTotal)} {item.price?.currency}
 								</div>
