@@ -49,7 +49,7 @@ export interface flightOfferResponse {
 	travelerPricings?: travelerPricings[];
 }
 
-interface itinerariesFlightOffers {
+export interface itinerariesFlightOffers {
 	duration?: string;
 	segments: Segment[];
 }
@@ -136,7 +136,7 @@ interface pricingOptions {
 
 type pricingOptionsFareType = "PUBLISHED" | "NEGOTIATED" | "CORPORATE";
 
-interface travelerPricings {
+export interface travelerPricings {
 	travelerId: string;
 	fareOption: travelerPricingFareOptions;
 	travelerType: travelerType;

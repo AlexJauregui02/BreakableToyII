@@ -4,11 +4,9 @@ import { useFlightOffersResponse } from "@/context/FlightOffersContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { 
-	iataCodeCitySearch, 
-	fornmatToCompleteDate, 
-	diffBetweenDate,
 	formatPrice 
 } from "@/lib/utils";
+import { DetailCard } from "@/components/Elements/detailCard/detailCard";
 
 export default function DetailsPage() {
 	const navigate = useNavigate();
@@ -30,83 +28,13 @@ export default function DetailsPage() {
 				<div className="w-[70%] border space-y-5 overflow-y-auto p-3 inset-shadow-sm bg-gray-50 text-sm">
 					{typeof flightOfferID === "string" &&
 						results?.data[Number(flightOfferID) - 1]?.itineraries?.map((itinerary, index) => (
-							<Card key={index} className="gap-y-5 font-medium">
-								{itinerary.segments.map((segment, index) => (
-									<div key={index}>
-										<Card className="flex flex-row gap-5 p-5">
-											<div className="w-[50%]">
-												<div>Flight {index + 1}</div>
-												<div>Departure: {fornmatToCompleteDate(segment.departure?.at)}</div>
-												<div>Arrival: {fornmatToCompleteDate(segment.arrival?.at)}</div>
-												<div>
-													{iataCodeCitySearch(segment.departure?.iataCode)} (
-													{segment.departure?.iataCode}) -{" "}
-													{iataCodeCitySearch(segment.arrival?.iataCode)} (
-													{segment.arrival?.iataCode})
-												</div>
-
-												<div>Flight number: {segment.number}</div>
-												<div>
-													Aircraft:{" "}
-													{results.dictionaries?.aircraft?.[segment.aircraft?.code ?? ""] ??
-														"unknown"}
-												</div>
-												<div>
-													{results.dictionaries?.carriers?.[segment.carrierCode ?? ""] ?? "unknown"}{" "}
-													({segment.carrierCode})
-												</div>
-											</div>
-											<Card className="w-[50%] p-2">
-												Travelers fare details
-												<div className="w-full h-37 inset-shadow-sm text-xs overflow-y-auto">
-													{results.data[Number(flightOfferID) - 1].travelerPricings?.map(
-														(travelerFareDetails, index) => (
-															<div key={index} className="p-1 border">
-																<div className="w-full mb-1">
-																	Traveler {travelerFareDetails.travelerId}
-																</div>
-																{travelerFareDetails.fareDetailsBySegment.map(
-																	(fareDetailBySegment, index) => {
-																		if (fareDetailBySegment.segmentId === segment.id) {
-																			return (
-																				<div key={index}>
-																					<div>Cabin: {fareDetailBySegment.cabin}</div>
-																					<div>Class: {fareDetailBySegment.class}</div>
-																					<div>Amenties:</div>
-																					<div className="font-normal">
-																						{fareDetailBySegment.amenities?.map(
-																							(amenity, index) => (
-																								<div key={index}>
-																									<div>- {amenity.description}</div>
-																								</div>
-																							)
-																						)}
-																					</div>
-																				</div>
-																			);
-																		}
-																		return null;
-																	}
-																)}
-															</div>
-														)
-													)}
-												</div>
-											</Card>
-										</Card>
-										{index != itinerary.segments.length - 1 && (
-											<div className="w-full flex justify-center items-center mt-5">
-												<Card className="border w-1/2 flex items-center p-0">
-													{diffBetweenDate(
-														segment.arrival?.at,
-														itinerary.segments[index + 1].departure?.at
-													)}
-												</Card>
-											</div>
-										)}
-									</div>
-								))}
-							</Card>
+							<DetailCard  
+								index={index}
+								itinerary={itinerary}
+								travelerPricings={results.data[Number(flightOfferID) - 1].travelerPricings}
+								aircraft={results.dictionaries?.aircraft}
+								carriers={results.dictionaries?.carriers}
+							/>
 						))}
 				</div>
 				<div className="w-[30%]">
