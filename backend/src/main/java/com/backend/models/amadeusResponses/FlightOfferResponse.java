@@ -23,10 +23,9 @@ public class FlightOfferResponse {
     private PricingOptions pricingOptions;
     private List<String> validatingAirlineCodes;
 
-    @JsonProperty("travelerPricings") // OJO: nombre exacto según JSON
+    @JsonProperty("travelerPricings") 
     private List<TravelerPricing> travelerPricings;
 
-    /* Getters/Setters */
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 

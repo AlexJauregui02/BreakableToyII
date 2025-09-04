@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @Service
 public class ApiClientService {
@@ -45,6 +46,7 @@ public class ApiClientService {
                 .header("Authorization", "Bearer " + AccessToken)
                 .retrieve()
                 .bodyToMono(String.class)
+                .retryWhen(Retry.backoff(3, Duration.ofMillis(200)))
                 .doOnError(error -> {
                     System.err.println("Error making GET request: " + error.getMessage());
                     if (error instanceof org.springframework.web.reactive.function.client.WebClientResponseException) {
