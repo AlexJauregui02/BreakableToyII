@@ -20,10 +20,16 @@ Flight offer search application, this web application makes use of Spring Boot a
 - JUnit 5 (Unit testing With Spring Boot Starter Test)
 
 ## Frontend (ReactJS + Vite)
-
+- React 
+- TypeScript
+- Vite (build tool & dev server)
+- Tailwind CSS
+- Jest (Testing)
+- Component Library(Shadcn..)
 
 ## 📋 Requirements
-
+- JDK 17+ (Backend)
+- Gradle
 
 ## ⚙ Installation
 
