@@ -40,7 +40,7 @@ export function formatToLongDate(date: Date | undefined | null) {
 // Returns complete date format (ej.) 2025-09-04 11:45 am
 export function fornmatToCompleteDate(date: string | undefined): string {
 	if (!date) return "";
-	return dayjs(date).format("YYYY-MM-DD HH:mm a");
+	return dayjs(date).format("MMM DD,YYYY HH:mm a");
 };
 
 // Gives the time between two dates
