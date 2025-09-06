@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.services.ApiClientService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import reactor.core.publisher.Mono;
 
 @RestController
+
 public class ApiController {
     
     private final ApiClientService apiClientService;
@@ -18,6 +20,7 @@ public class ApiController {
     }
 
     @GetMapping("/api/airport-and-cities-search")
+    @Operation(summary = "Search of Airports and Cities based on keywords.")
     public Mono<String> airportAndCitiesSearch(
             @RequestParam(value = "subType", required = true) String subType,
             @RequestParam(value = "keyword", required = true) String keyword,
@@ -35,6 +38,7 @@ public class ApiController {
     }
 
     @GetMapping("/api/airline-information")
+    @Operation(summary = "Airline information including name from IATA code.")
     public Mono<String> getAirlineInformation(
             @RequestParam(value = "airlineCode", required = false) String airlineCode) {
         return apiClientService.getAirlineInformation(airlineCode)
@@ -45,6 +49,7 @@ public class ApiController {
     }
 
     @GetMapping("/api/flight-offers")
+    @Operation(summary = "Flight offers available.")
     public Mono<String> flightOffersOnCriteria(
             @RequestParam(value = "originLocationCode", required = true) String originLocationCode,
             @RequestParam(value = "destinationLocationCode", required = true) String destinationLocationCode,
