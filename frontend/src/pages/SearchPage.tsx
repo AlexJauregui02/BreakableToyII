@@ -18,6 +18,8 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { DateSelect } from "@/components/Elements/dateSelect/dateSelect";
 import { toast } from "sonner";
 
+import { currencyCodeOptions } from "@/lib/props";
+
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
@@ -25,12 +27,6 @@ dayjs.extend(isSameOrAfter);
 export default function SearchPage() {
 	const { setResults, setLocationsName, setSearchParams } = useFlightOffersResponse();
 	const navigate = useNavigate();
-
-	const currencyCodeOptions: SelectOption[] = [
-		{ label: "Select...", value: "" },
-		{ label: "USD", value: "USD" },
-		{ label: "MXN", value: "MXN" },
-	];
 
 	const [loading, setLoading] = useState(false);
 
